@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/adrian/Documents/compiler/compiler'
+make: Leaving directory '/home/adrian/Documents/compiler/compiler'
+ 
+Makefile:15: *** missing separator.  Stop.
+
