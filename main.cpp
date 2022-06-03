@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "lexer.h"
+//#include "lexer.h"
+#include "Parser.h"
 using namespace std;
 
 int main() {
@@ -28,9 +29,11 @@ int main() {
 
     // val = nextWord();
     // cout << val << endl;
+    
+    Parser parse;
 
     do{
-        val = nextWord();
+        val = parse.getNextToken();
         if(val.tok == -1){
             cout << "encountered error, invalid lexeme" << endl;
             return -1;
@@ -38,6 +41,16 @@ int main() {
         cout<< tokenNames[val.tok] << "," << val.data << endl;
         
     }while(val.tok != endOfFile);
+    
+    // do{
+    //     val = nextWord();
+    //     if(val.tok == -1){
+    //         cout << "encountered error, invalid lexeme" << endl;
+    //         return -1;
+    //     }
+    //     cout<< tokenNames[val.tok] << "," << val.data << endl;
+        
+    // }while(val.tok != endOfFile);
 
     // while((val = nextWord()) != endFile){
     //     cout<< val.tok << "," << val.data << endl;
