@@ -17,6 +17,10 @@ int main() {
         return 0;
     }
 
+    string tokenNames[37] = {"identifier", "intReserve", "floatReserve", "boolReserve", "charReserve", "boolLit", "fnReserve", "trueReserve", "falseReserve", "ifReserve", "elseReserve", "whileReserve", "forReserve", "returnReserve", "printReserve", "letReserve",  "intLit", "floatLit", "charLit", "multOp", "addOp", "relOp", "unaryOp", "tokCurlyOpen", "tokCurlyClose", "tokBracketOpen", "tokBracketClose", "tokColon", "tokSemicolon", "tokComma", "andReserve", "orReserve", "tokEquals", "arrow", "other", "endOfFile", "invalid"};
+
+    
+
     Token val;
     // Token endFile;
     // endFile.tok = 4;
@@ -27,8 +31,12 @@ int main() {
 
     do{
         val = nextWord();
-        cout<< val.tok << "," << val.data << endl;
-
+        if(val.tok == -1){
+            cout << "encountered error, invalid lexeme" << endl;
+            return -1;
+        }
+        cout<< tokenNames[val.tok] << "," << val.data << endl;
+        
     }while(val.tok != endOfFile);
 
     // while((val = nextWord()) != endFile){

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <algorithm>
 #include "lexer.h"
 using namespace std;
 
@@ -15,21 +16,63 @@ using namespace std;
 // enum tokens{identifier, intLit, floatLit, charLit, endOfFile, invalid};
 
 
-                    //   let  dig   nline    eof
-int transTable[6][6] = 
-                        {{S4, Se,     S18 ,   S19},     // S0 
-                        {S4,  S4,       Se,   Se  },    // S4
-                        {Se,  Se,      S18,   Se},     //S18
-                        {Se,  Se,      Se,    Se},      //S19
-                        {Se, Se,       Se,    Se}};     //Se
+                    //    underSc   let  dig   nline    eof
+// int transTable[6][6] = 
+//                         {{  S4, Se,     S18 ,   S19},     // S0 
+//                         {   S4,  S4,    Se,   Se  },    // S4
+//                         {Se,  Se,      S18,   Se},     //S18
+//                         {Se,  Se,      Se,    Se},      //S19
+//                         {Se, Se,       Se,    Se}};     //Se
+
+
+
+                    //    letter, underscore, digit, printable, invertComma, space, period, exclamation, equals, asterisk, forwardSlash, plus, minus, greaterThan, lessThan, openBracket, closeBracket, openCurly, closeCurly, newLine, endFile, comma, colon, semicolon
+int transTable[31][24] = 
+                
+            /* S0 */   {{  S4,      S4,         S1,     Se,        S5,        S20,   Se,      S16,        S14,      S8,       S8,          S9,   S28,     S12,        S10,        S21,       S22,          S23,        S24,       S18,     S19,      S26,  S27,    S25},
+            /* S1 */    {   Se,     Se,         S1,     Se,        Se,        Se,    S2,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se},
+            /* S2 */    {  Se,     Se,         S3,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S3 */    {  Se,     Se,         S3,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S4 */    {  S4,     S4,         S4,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S5 */    {  S6,     S6,         S6,     S6,        S6,        S6,    S6,      S6,        S6,        S6,     S6,           S6,    S6,     S6,          S6,        S6,         S6,           S6,        S6,        Se,       Se,     S6,    S6,     S6   },
+            /* S6 */    {  Se,     Se,         Se,     Se,        S7,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S7 */    {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S8 */    {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S9 */    {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S10 */   { Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        S11,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S11 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S12 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        S13,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S13 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S14 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        S15,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S15 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S16 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        S17,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S17 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S18 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        S18,       Se,     Se,    Se,     Se   },
+            /* S19 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se   },
+            /* S20 */   {  Se,     Se,         Se,     Se,        Se,        S20,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S21 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S22 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S23 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S24 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S25 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S26 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S27 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S28 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     S29,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* S29 */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    },
+            /* Se */   {  Se,     Se,         Se,     Se,        Se,        Se,    Se,      Se,        Se,        Se,     Se,           Se,    Se,     Se,          Se,        Se,         Se,           Se,        Se,        Se,       Se,     Se,    Se,     Se    }};
+                        
+
 
 int state = 0;
 // bool finalStates[7] = {false, true, true, true, false };
-int finalStateList[3] = {S4, S18, S19};
-int tokenTable[7] = {invalid, identifier, invalid, endOfFile, invalid};
+int finalStateList[25] = {S1, S3, S4, S7, S8, S9, S10, S11, S12, S13, S14, S15, S17, S18, S19, S20, S21, S22, S23, S24, S25, S26, S27, S28, S29};
+                //    S0,       S1,       S2,        S3,       S4,        S5,        S6,      S7,     S8,     S9,     S10,   S11,   S12,     S13,    S14,       S15,    S16,    S17,     S18,     S19,      S20,    S21,                  S22,             S23,        S24,        S25,           S26,        S27,   S28,     S29,   Se
+int tokenTable[31] = {invalid, intLit,  invalid,   floatLit,  identifier, invalid, invalid, charLit, multOp, addOp, relOp,    relOp,  relOp, relOp,  tokEquals, relOp, invalid, relOp,  other, endOfFile, other, tokBracketOpen, tokBracketClose, tokCurlyOpen, tokCurlyClose, tokSemicolon, tokComma, tokColon, addOp, arrow, invalid};
 string lexeme = "";
 FILE* input_file;
 
+string keywords[16] = {"char", "int", "float", "bool", "fn", "true", "false", "if", "else", "while", "for", "return", "print", "let", "and", "or"};
+int keywordTokens[16] = {charReserve, intReserve, floatReserve, boolReserve, fnReserve, trueReserve, falseReserve, ifReserve, elseReserve, whileReserve, forReserve, returnReserve, printReserve, letReserve, andReserve, orReserve};
 // struct {
 //     int tok;
 //     string data;
@@ -68,6 +111,8 @@ char nextChar(){
     return EOF;     
 }
 
+//    printable,
+
 int catTable(char c){
 
     if(c == -1)
@@ -78,6 +123,46 @@ int catTable(char c){
         return digit;
     else if(c == '\n')
         return newLine;
+    else if(c == '_')
+        return underscore;
+    else if(c == '\'')
+        return invertComma;
+    else if(c == ' ')
+        return space;
+    else if(c == '.')
+        return period;
+    else if(c == '!')
+        return exclamation;
+    else if(c == '=')
+        return equals;
+    else if(c == '*')
+        return asterisk;
+    else if(c == '/')
+        return forwardSlash;
+    else if(c == '+')
+        return plusClassifier;
+    else if(c == '-')
+        return minusClassifier;
+    else if(c == '>')
+        return greaterThan;
+    else if(c == '<')
+        return lessThan;
+    else if(c == '(')
+        return openBracket;
+    else if(c == ')')
+        return closeBracket;
+    else if(c == '{')
+        return openCurly;
+    else if(c == '}')
+        return closeCurly;
+    else if(c == ';')
+        return semicolon;
+    else if(c == ':')
+        return colon;
+    else if(c == ',')
+        return comma;    
+    else if(c >= 32 && c <= 126)
+        return printable;
 
     return -1;
 }
@@ -88,6 +173,19 @@ void emptyStack(){
         stateStack.pop();
     }
 
+}
+
+bool isKeyword(string lex){
+    for(string _keyword: keywords){
+        if(lex== _keyword)
+            return true;
+    }
+    return false;
+}
+
+int matchKeyword(string lex){
+    int pos = distance(keywords, find(keywords, keywords+16, lex));
+    return keywordTokens[pos];
 }
 
 Token nextWord(){
@@ -119,16 +217,25 @@ Token nextWord(){
         char temp;
         state = stateStack.top();
         stateStack.pop();
-        temp = lexeme.back();
-        lexeme.pop_back();
-        ungetc(temp, input_file);
+        if(lexeme != ""){
+            temp = lexeme.back();
+            lexeme.pop_back();
+            ungetc(temp, input_file);
+        }
+        
         //fseek(input_file, 0, SEEK_CUR-1);
         
     }
 
     Token result;
     result.data = lexeme;
-    result.tok = tokenTable[state];
+
+    if(state == -1){
+        result.tok = -1;
+    }else if(tokenTable[state] == identifier && isKeyword(lexeme)){
+        result.tok = matchKeyword(lexeme);
+    }else
+        result.tok = tokenTable[state];
 
     return result;
 

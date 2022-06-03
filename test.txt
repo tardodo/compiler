@@ -1,3 +1,13 @@
-hello12
-there
-everyone
+fn Sq(x: float) -> float {
+    return x*x;
+}
+
+fn XGreaterY(x:float, y:float) -> bool {
+    let ans:bool = true;
+    if(y>x) { ans = false;}
+    return ans;
+}
+
+let x:float = 2.4;
+print x;
+char c =          'h'          ;
