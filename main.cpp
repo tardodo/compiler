@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-//#include "lexer.h"
-#include "Parser.h"
+#include "lexer.h"
+// #include "Parser.h"
 using namespace std;
 
 int main() {
@@ -18,7 +18,7 @@ int main() {
         return 0;
     }
 
-    string tokenNames[37] = {"identifier", "intReserve", "floatReserve", "boolReserve", "charReserve", "boolLit", "fnReserve", "trueReserve", "falseReserve", "ifReserve", "elseReserve", "whileReserve", "forReserve", "returnReserve", "printReserve", "letReserve",  "intLit", "floatLit", "charLit", "multOp", "addOp", "relOp", "unaryOp", "tokCurlyOpen", "tokCurlyClose", "tokBracketOpen", "tokBracketClose", "tokColon", "tokSemicolon", "tokComma", "andReserve", "orReserve", "tokEquals", "arrow", "other", "endOfFile", "invalid"};
+    string tokenNames[37] = {"identifier", "intReserve", "floatReserve", "boolReserve", "charReserve", "boolLit", "fnReserve", "trueReserve", "falseReserve", "ifReserve", "elseReserve", "whileReserve", "forReserve", "returnReserve", "printReserve", "letReserve",  "intLit", "floatLit", "charLit", "multOp", "addOp", "relOp", "notReserve", "tokCurlyOpen", "tokCurlyClose", "tokBracketOpen", "tokBracketClose", "tokColon", "tokSemicolon", "tokComma", "andReserve", "orReserve", "tokEquals", "arrow", "other", "endOfFile", "invalid"};
 
     
 
@@ -30,27 +30,27 @@ int main() {
     // val = nextWord();
     // cout << val << endl;
     
-    Parser parse;
+    // Parser parse;
 
-    do{
-        val = parse.getNextToken();
-        if(val.tok == -1){
-            cout << "encountered error, invalid lexeme" << endl;
-            return -1;
-        }
-        cout<< tokenNames[val.tok] << "," << val.data << endl;
-        
-    }while(val.tok != endOfFile);
-    
     // do{
-    //     val = nextWord();
+    //     val = parse.getNextToken();
     //     if(val.tok == -1){
     //         cout << "encountered error, invalid lexeme" << endl;
     //         return -1;
     //     }
     //     cout<< tokenNames[val.tok] << "," << val.data << endl;
         
-    // }while(val.tok != endOfFile);
+    // }while(val.tok != tokEndOfFile);
+    
+    do{
+        val = nextWord();
+        if(val.tok == -1){
+            cout << "encountered error, invalid lexeme" << endl;
+            return -1;
+        }
+        cout<< tokenNames[val.tok] << "," << val.data << endl;
+        
+    }while(val.tok != tokEndOfFile);
 
     // while((val = nextWord()) != endFile){
     //     cout<< val.tok << "," << val.data << endl;

@@ -15,6 +15,8 @@ public:
 
     Token getNextToken();
 
+    bool Fail();
+
     bool program();
 
     bool statement();
@@ -29,7 +31,7 @@ public:
     bool functionDecl();
     bool block();
 
-    bool identifier();
+    // bool identifier();
     bool formalParams();
     bool type();
     
