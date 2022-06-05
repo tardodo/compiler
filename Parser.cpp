@@ -5,6 +5,8 @@ using namespace std;
 Parser::Parser(/* args */)
 {
     usedNextNext = false;
+    reportedFail = false;
+    checkedOptional = false;
 }
 
 Parser::~Parser()
@@ -32,62 +34,82 @@ Token Parser::getNextToken(){
 bool Parser::program(){
     nextToken = getNextToken();
 
-    if(statement()){
+    // if(statement()){
+    //     if(nextToken.tok == tokEndOfFile)
+    //         return true;
+    //     else Fail();
+    // }else if(nextToken.tok == tokEndOfFile)
+    //     return true;
+    // else Fail();
+
+
+    // Zero or more statements
+    while(statement()){
+        // nextToken = getNextToken();
+
         if(nextToken.tok == tokEndOfFile)
             return true;
-        else Fail();
-    }else if(nextToken.tok == tokEndOfFile)
+
+    }
+
+    if(nextToken.tok == tokEndOfFile && !reportedFail)
         return true;
-    else Fail();
+    else return false;
 
 }
 
 bool Parser::Fail(){
     cout << "Syntax Error" << endl;
+    reportedFail = true;
     return false;
 }
 
 bool Parser::statement(){
 
     if(variableDecl()){
-        nextToken = getNextToken();
+        // if(!checkedOptional) nextToken = getNextToken();
+        // else checkedOptional = false;
+
         if(nextToken.tok == tokSemicolon){
+            nextToken = getNextToken();
             return true;
-        }else Fail();
-
-    }else if(assignment()){
-        nextToken = getNextToken();
-        if(nextToken.tok == tokSemicolon){
-            return true;
-        }else Fail();
-         
-    }else if(printStatement()){
-        nextToken = getNextToken();
-        if(nextToken.tok == tokSemicolon){
-            return true;
-        }else Fail();
-
-    }else if(ifStatement()){
-        return true;
-
-    }else if(forStatement()){
-        return true;
-
-    }else if(whileStatement()){
-        return true;
-
-    }else if(returnStatement()){
-        nextToken = getNextToken();
-        if(nextToken.tok == tokSemicolon){
-            return true;
-        }else Fail();
-
-    }else if(functionDecl()){
-        return true;
-
-    }else if(block()){
-        return true;
+        }else return Fail();
     }
+    // }else if(assignment()){
+    //     nextToken = getNextToken();
+    //     if(nextToken.tok == tokSemicolon){
+    //         return true;
+    //     }else return Fail();
+         
+    // }else if(printStatement()){
+    //     nextToken = getNextToken();
+    //     if(nextToken.tok == tokSemicolon){
+    //         return true;
+    //     }else return Fail();
+
+    // }else if(ifStatement()){
+    //     return true;
+
+    // }else if(forStatement()){
+    //     return true;
+
+    // }else if(whileStatement()){
+    //     return true;
+
+    // }else if(returnStatement()){
+    //     nextToken = getNextToken();
+    //     if(nextToken.tok == tokSemicolon){
+    //         return true;
+    //     }else return Fail();
+
+    // }else if(functionDecl()){
+    //     return true;
+
+    // }else if(block()){
+    //     return true;
+    // }
+
+    return false;
 }
 
 bool Parser::variableDecl(){
@@ -101,18 +123,26 @@ bool Parser::variableDecl(){
             if(nextToken.tok == tokColon){
                 nextToken = getNextToken();
 
-                if(type()){
+                if(nextToken.tok == tokFloatReserve || nextToken.tok == tokIntReserve || nextToken.tok == tokBoolReserve || nextToken.tok == tokCharReserve){
                     nextToken = getNextToken();
 
                     if(nextToken.tok == tokEquals){
-                        return expression();
+                        // return expression();
+                        nextToken = getNextToken();
+
+                        if(expression()){
+                            return true;
+                        }
                     }
                 }
             }
         }
-    }
 
-    return Fail();
+        return Fail();
+
+    }else return false;
+
+    // return Fail();
 }
 
 // bool assignment();
@@ -134,16 +164,20 @@ bool Parser::variableDecl(){
 
 bool Parser::expression(){
     if(simpleExpr()){
-        nextToken = getNextToken();
+        // nextToken = getNextToken();
+        // if(!checkedOptional) {
+        //     nextToken = getNextToken();
+        //     checkedOptional = true;
+        // }
 
         while(nextToken.tok == tokRelOp){
             //if(nextToken.tok == tokRelOp){
                 
             nextToken = getNextToken();
-
+            // checkedOptional = false;
             if(simpleExpr()){
 
-                nextToken = getNextToken();
+                // nextToken = getNextToken();
             }else return Fail();
 
             //}
@@ -152,21 +186,25 @@ bool Parser::expression(){
         // Zero or more repetitions
         return true;
 
-    }else return Fail();
+    }else return false;
 }
 
 bool Parser::simpleExpr(){
     if(term()){
-        nextToken = getNextToken();
+        // nextToken = getNextToken();
+        // if(!checkedOptional){
+        //     nextToken = getNextToken();
+        //     checkedOptional = true;
+        // }
 
         while(nextToken.tok == tokAddOp){
             //if(nextToken.tok == tokRelOp){
                 
             nextToken = getNextToken();
-
+            // checkedOptional = false;
             if(term()){
 
-                nextToken = getNextToken();
+                // nextToken = getNextToken();
             }else return Fail();
 
             //}
@@ -175,22 +213,26 @@ bool Parser::simpleExpr(){
         // Zero or more repetitions
         return true;
 
-    }else return Fail();
+    }else return false;
 }
 // bool relationalOp();
     
 bool Parser::term(){
     if(factor()){
-        nextToken = getNextToken();
+        // if(!checkedOptional) {
+        //     nextToken = getNextToken();
+        //     checkedOptional = true;
+        // }
+        // nextToken = getNextToken();
 
         while(nextToken.tok == tokMultOp){
             //if(nextToken.tok == tokRelOp){
-                
+            
             nextToken = getNextToken();
-
+            // checkedOptional = false;
             if(factor()){
 
-                nextToken = getNextToken();
+                // nextToken = getNextToken();
             }else return Fail();
 
             //}
@@ -199,7 +241,7 @@ bool Parser::term(){
         // Zero or more repetitions
         return true;
 
-    }else return Fail();
+    }else return false;
 }
 // bool additiveOp();
 
@@ -213,6 +255,7 @@ bool Parser::factor(){
         return true;
 
     }else if(nextToken.tok == tokIdentifier && nextNextToken.tok != tokBracketOpen){
+        nextToken = getNextToken();
         return true;
 
     }else if(functionCall()){
@@ -224,13 +267,14 @@ bool Parser::factor(){
     }else if(unary()){
        return true;
 
-    }else return Fail();
+    }else return false;
 }
 // bool multiplicativeOp();
 
 bool Parser::literal(){
 
     if(nextToken.tok == tokBoolLit || nextToken.tok == tokIntLit || nextToken.tok == tokFloatLit || nextToken.tok == tokCharLit){
+        nextToken = getNextToken();
         return true;
     }else return false;
 
@@ -244,7 +288,7 @@ bool Parser::functionCall(){
             nextToken = getNextToken();
 
             if(actualParams()){
-                nextToken = getNextToken();
+                // nextToken = getNextToken();
 
                 // if(nextToken.tok == tokBracketClose){
                 //     return true;
@@ -252,6 +296,7 @@ bool Parser::functionCall(){
             } 
             
             if(nextToken.tok == tokBracketClose){
+                nextToken = getNextToken();
                 return true;
             }
         }
@@ -265,9 +310,10 @@ bool Parser::subExpression(){
         nextToken = getNextToken();
 
         if(expression()){
-            nextToken = getNextToken();
+            // nextToken = getNextToken();
 
             if(nextToken.tok == tokBracketClose){
+                nextToken = getNextToken();
                 return true;
             }
         }
@@ -277,11 +323,35 @@ bool Parser::subExpression(){
 }
 
 bool Parser::unary(){
+    if((nextToken.tok == tokMultOp && nextToken.data == "-") || nextToken.tok == tokNotReserve){
+        nextToken = getNextToken();
 
+        if(expression())
+            return true;
+        else return Fail();
+    }else return false;
     
 }
 
-// bool actualParams();
+bool Parser::actualParams(){
+    if(expression()){
+        //nextToken = getNextToken();
+        // if(!checkedOptional) {
+        //     nextToken = getNextToken();
+        //     checkedOptional = true;
+        // }
+
+        while(nextToken.tok == tokComma){
+            nextToken = getNextToken();
+
+            if(expression()){
+                // nextToken = getNextToken();
+            }else return Fail();
+        }
+
+        return true;
+    }else return false;
+}
 
 // bool booleanLiteral();
 // bool integerLiteral();

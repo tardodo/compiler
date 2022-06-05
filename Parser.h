@@ -9,6 +9,8 @@ private:
     bool usedNextNext;
     Token nextToken;
     Token nextNextToken;
+    bool reportedFail;
+    bool checkedOptional;
 public:
     Parser(/* args */);
     ~Parser();
@@ -22,31 +24,31 @@ public:
     bool statement();
 
     bool variableDecl();
-    bool assignment();
-    bool printStatement();
-    bool ifStatement();
-    bool forStatement();
-    bool whileStatement();
-    bool returnStatement();
-    bool functionDecl();
-    bool block();
+    // bool assignment();
+    // bool printStatement();
+    // bool ifStatement();
+    // bool forStatement();
+    // bool whileStatement();
+    // bool returnStatement();
+    // bool functionDecl();
+    // bool block();
 
-    // bool identifier();
-    bool formalParams();
-    bool type();
+    // // bool identifier();
+    // bool formalParams();
+    // bool type();
     
-    bool formalParam();
+    // bool formalParam();
 
     bool expression();
 
     bool simpleExpr();
-    bool relationalOp();
+    // bool relationalOp();
     
     bool term();
-    bool additiveOp();
+    // bool additiveOp();
 
     bool factor();
-    bool multiplicativeOp();
+    // bool multiplicativeOp();
 
     bool literal();
     bool functionCall();
@@ -55,10 +57,10 @@ public:
 
     bool actualParams();
 
-    bool booleanLiteral();
-    bool integerLiteral();
-    bool floatLiteral();
-    bool charLiteral();
+    // bool booleanLiteral();
+    // bool integerLiteral();
+    // bool floatLiteral();
+    // bool charLiteral();
 
     
 

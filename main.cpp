@@ -32,15 +32,19 @@ int main() {
     
     Parser parse;
 
-    do{
-        val = parse.getNextToken();
-        if(val.tok == -1){
-            cout << "encountered error, invalid lexeme" << endl;
-            return -1;
-        }
-        cout<< tokenNames[val.tok] << "," << val.data << endl;
+    bool result = parse.program();
+
+    cout << result << endl;
+
+    // do{
+    //     val = parse.getNextToken();
+    //     if(val.tok == -1){
+    //         cout << "encountered error, invalid lexeme" << endl;
+    //         return -1;
+    //     }
+    //     cout<< tokenNames[val.tok] << "," << val.data << endl;
         
-    }while(val.tok != tokEndOfFile);
+    // }while(val.tok != tokEndOfFile);
     
     // do{
     //     val = nextWord();
