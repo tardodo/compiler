@@ -3,6 +3,7 @@
 
 #include "lexer.h"
 
+
 class Parser
 {
 private:
@@ -17,27 +18,27 @@ public:
 
     Token getNextToken();
 
-    bool Fail();
+    bool Fail(std::string error);
 
     bool program();
 
     bool statement();
 
     bool variableDecl();
-    // bool assignment();
-    // bool printStatement();
-    // bool ifStatement();
-    // bool forStatement();
-    // bool whileStatement();
-    // bool returnStatement();
-    // bool functionDecl();
-    // bool block();
+    bool assignment();
+    bool printStatement();
+    bool ifStatement();
+    bool forStatement();
+    bool whileStatement();
+    bool returnStatement();
+    bool functionDecl();
+    bool block();
 
-    // // bool identifier();
-    // bool formalParams();
-    // bool type();
+    // bool identifier();
+    bool formalParams();
+    bool type();
     
-    // bool formalParam();
+    bool formalParam();
 
     bool expression();
 

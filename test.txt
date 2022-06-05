@@ -1,7 +1,8 @@
-/*
+
 fn Sq(x: float) -> float {
     return x*x;
 }
+
 
 fn XGreaterY(x:float, y:float) -> bool {
     let ans:bool = true;
@@ -11,9 +12,9 @@ fn XGreaterY(x:float, y:float) -> bool {
 
 let x:float = 2.4;
 print x; 
-char c =          'h'          ; 
+let c:char =          'h'          ; 
 
-*/
+
 
 // this aisfu afhu agjbi kbjh SGD31895097185y   9084ry 787392646$%@$&(^%))_*%$@~.,/\';[] //////////
 
