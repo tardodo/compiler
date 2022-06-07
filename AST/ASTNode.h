@@ -5,12 +5,12 @@
 class ASTNode{
 
 public:
-    
-    ASTNode(/* args */);
+
+    ASTNode();
     ~ASTNode();
 };
 
-ASTNode::ASTNode(/* args */)
+ASTNode::ASTNode()
 {
 }
 
