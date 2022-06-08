@@ -6,6 +6,7 @@
 #include "ASTExpression.h"
 #include "ASTIdentifier.h"
 #include <string>
+#include "../Visitors/visitor.h"
 
 class ASTBinOp : public ASTExpression
 {
@@ -22,6 +23,10 @@ public:
     rightChild = right;
     }
     ~ASTBinOp(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTBinOp::ASTBinOp(ASTExpression* left, std::string oper, ASTExpression* right)

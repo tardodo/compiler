@@ -4,6 +4,7 @@
 #include "ASTNode.h"
 #include "ASTBlock.h"
 #include "ASTExpression.h"
+#include "../Visitors/visitor.h"
 
 class ASTWhile: public ASTNode
 {
@@ -18,6 +19,10 @@ public:
         block = bl;
     }
     ~ASTWhile(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTWhile::ASTWhile(ASTExpression* expr, ASTBlock* bl)

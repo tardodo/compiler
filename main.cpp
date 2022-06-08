@@ -3,6 +3,7 @@
 #include <vector>
 // #include "lexer.h"
 #include "Parser.h"
+#include "Visitors/XMLVisitor.h"
 // #include "AST/ASTNode.h"
 
 using namespace std;
@@ -33,8 +34,10 @@ int main() {
     // cout << val << endl;
     
     Parser parse;
+    XMLVisitor* v = new XMLVisitor();
 
     ASTNode* result = parse.program();
+    result->accept(v);
 
     cout << result << endl;
 

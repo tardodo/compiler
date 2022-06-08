@@ -6,6 +6,7 @@
 #include "ASTFormalParams.h"
 #include "ASTBlock.h"
 #include <vector>
+#include "../Visitors/visitor.h"
 
 class ASTFuncDecl : public ASTNode
 {
@@ -25,6 +26,10 @@ public:
     block = bl;
     }
     ~ASTFuncDecl(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTFuncDecl::ASTFuncDecl(ASTIdentifier* id, std::vector<ASTFormalParam*> params, std::string type, ASTBlock* bl)

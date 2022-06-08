@@ -1,0 +1,81 @@
+<Prog>
+	<FuncDecl ReturnType="float">
+		<Id>Sq</Id>
+		<FormalParams>
+			<FormalParam Type="float">
+				<Id>x</Id>
+			</FormalParam>
+		</FormalParams>
+		<Block>
+			<Return>
+				<BinaryOp Op="*">
+					<Id>x</Id>
+					<Id>x</Id>
+				</BinaryOp>
+			</Return>
+		</Block>
+	</FuncDecl>
+	<FuncDecl ReturnType="bool">
+		<Id>XGreaterY</Id>
+		<FormalParams>
+			<FormalParam Type="float">
+				<Id>x</Id>
+			</FormalParam>
+			<FormalParam Type="float">
+				<Id>y</Id>
+			</FormalParam>
+		</FormalParams>
+		<Block>
+			<VarDecl Type="bool">
+				<Id>ans</Id>
+				<Literal Type="bool">true</Literal>
+			</VarDecl>
+			<If>
+				<BinaryOp Op=">">
+					<Id>y</Id>
+					<Id>x</Id>
+				</BinaryOp>
+				<Block>
+					<Assign>
+						<Id>ans</Id>
+						<Literal Type="bool">false</Literal>
+					</Assign>
+				</Block>
+			</If>
+			<Return>
+				<Id>ans</Id>
+			</Return>
+		</Block>
+	</FuncDecl>
+	<VarDecl Type="float">
+		<Id>x</Id>
+		<Literal Type="float">2.4</Literal>
+	</VarDecl>
+	<Print>
+		<Id>x</Id>
+	</Print>
+	<VarDecl Type="char">
+		<Id>c</Id>
+		<Literal Type="char">'h'</Literal>
+	</VarDecl>
+	<VarDecl Type="float">
+		<Id>x</Id>
+		<BinaryOp Op=">=">
+			<BinaryOp Op="+">
+				<Literal Type="float">10.1</Literal>
+				<FuncCall>
+					<Id>func</Id>
+					<ActualParams>
+						<Literal Type="int">10</Literal>
+						<Literal Type="int">50</Literal>
+						<Literal Type="int">20</Literal>
+					</ActualParams>
+				</FuncCall>
+			</BinaryOp>
+			<BinaryOp Op="*">
+				<Id>y</Id>
+				<Id>chong</Id>
+			</BinaryOp>
+		</BinaryOp>
+	</VarDecl>
+</Prog>

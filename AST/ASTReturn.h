@@ -3,6 +3,7 @@
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
+#include "../Visitors/visitor.h"
 
 class ASTReturn: public ASTNode
 {
@@ -14,6 +15,10 @@ public:
         expression = expr;
     }
     ~ASTReturn(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTReturn::ASTReturn(ASTExpression* expr)

@@ -3,6 +3,7 @@
 
 #include "ASTNode.h"
 #include <vector>
+#include "../Visitors/visitor.h"
 
 class ASTBlock : public ASTNode
 {
@@ -15,6 +16,10 @@ public:
         childNodes = statements;
     }
     ~ASTBlock(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTBlock::ASTBlock(std::vector<ASTNode*> statements)

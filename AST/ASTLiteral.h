@@ -3,6 +3,7 @@
 
 #include "ASTExpression.h"
 #include <string>
+#include "../Visitors/visitor.h"
 
 class ASTLiteral : public ASTExpression
 {
@@ -46,6 +47,10 @@ public:
     }
 
     ~ASTLiteral(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTLiteral::ASTLiteral(std::string type, std::string val)

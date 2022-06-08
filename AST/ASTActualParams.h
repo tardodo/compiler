@@ -4,6 +4,7 @@
 
 #include "ASTExpression.h"
 #include <vector>
+#include "../Visitors/visitor.h"
 
 class ASTActualParams: public ASTNode
 {
@@ -16,6 +17,10 @@ public:
         params = paramList;
     }
     ~ASTActualParams();
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTActualParams::ASTActualParams(std::vector<ASTExpression*> paramList)

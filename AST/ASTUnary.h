@@ -4,6 +4,7 @@
 
 #include "ASTExpression.h"
 #include <string>
+#include "../Visitors/visitor.h"
 
 class ASTUnary: public ASTExpression
 {
@@ -15,6 +16,10 @@ public:
         this->expr = expr;
     }
     ~ASTUnary(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTUnary::ASTUnary(/* args */)

@@ -6,6 +6,7 @@
 #include "ASTBinOp.h"
 #include "ASTExpression.h"
 #include <string>
+#include "../Visitors/visitor.h"
 
 class ASTVarDecl : public ASTNode
 {
@@ -22,6 +23,10 @@ public:
     expression = expr;
     }
     ~ASTVarDecl();
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTVarDecl::ASTVarDecl(ASTIdentifier* id, std::string type, ASTExpression* expr)

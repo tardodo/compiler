@@ -4,6 +4,7 @@
 #include "ASTNode.h"
 #include "ASTBlock.h"
 #include "ASTExpression.h"
+#include "../Visitors/visitor.h"
 
 class ASTIfStmt : public ASTNode
 {
@@ -20,6 +21,10 @@ public:
     falseBlock = f;
     }
     ~ASTIfStmt(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTIfStmt::ASTIfStmt(ASTExpression* cond, ASTBlock* t, ASTBlock* f)

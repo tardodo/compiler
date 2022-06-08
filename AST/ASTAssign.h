@@ -5,6 +5,7 @@
 #include "ASTExpression.h"
 #include "ASTIdentifier.h"
 #include <string>
+#include "../Visitors/visitor.h"
 
 class ASTAssign : public ASTNode
 {
@@ -19,6 +20,10 @@ public:
         expression = expr;  
     }
     ~ASTAssign();
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTAssign::ASTAssign(ASTIdentifier* id, ASTExpression* expr)

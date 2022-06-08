@@ -3,6 +3,7 @@
 
 
 #include "ASTNode.h"
+#include "../Visitors/visitor.h"
 
 class ASTExpression : public ASTNode
 {

@@ -3,6 +3,7 @@
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
+#include "../Visitors/visitor.h"
 
 class ASTPrint: public ASTNode
 {
@@ -14,6 +15,10 @@ public:
         expression = expr;
     }
     ~ASTPrint(){};
+
+    virtual void accept(visitor* v) override{
+        v->visit(this);
+    }
 };
 
 // ASTPrint::ASTPrint(ASTExpression* expr)
