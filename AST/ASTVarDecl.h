@@ -16,19 +16,23 @@ public:
     ASTIdentifier* identifier;
     ASTExpression* expression;
      
-    ASTVarDecl(ASTIdentifier* id, std::string type, ASTExpression* expr);
+    ASTVarDecl(ASTIdentifier* id, std::string type, ASTExpression* expr){
+        this->type = type;
+    identifier = id;
+    expression = expr;
+    }
     ~ASTVarDecl();
 };
 
-ASTVarDecl::ASTVarDecl(ASTIdentifier* id, std::string type, ASTExpression* expr)
-{
-    this->type = type;
-    identifier = id;
-    expression = expr;
-}
+// ASTVarDecl::ASTVarDecl(ASTIdentifier* id, std::string type, ASTExpression* expr)
+// {
+//     this->type = type;
+//     identifier = id;
+//     expression = expr;
+// }
 
-ASTVarDecl::~ASTVarDecl()
-{
-}
+// ASTVarDecl::~ASTVarDecl()
+// {
+// }
 
 #endif

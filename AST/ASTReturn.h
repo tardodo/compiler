@@ -1,3 +1,5 @@
+#ifndef ASTRETURN_H
+#define ASTRETURN_H
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
@@ -8,15 +10,19 @@ private:
     /* data */
 public:
     ASTExpression* expression;
-    ASTReturn(ASTExpression* expr);
-    ~ASTReturn();
+    ASTReturn(ASTExpression* expr){
+        expression = expr;
+    }
+    ~ASTReturn(){};
 };
 
-ASTReturn::ASTReturn(ASTExpression* expr)
-{
-    expression = expr;
-}
+// ASTReturn::ASTReturn(ASTExpression* expr)
+// {
+//     expression = expr;
+// }
 
-ASTReturn::~ASTReturn()
-{
-}
+// ASTReturn::~ASTReturn()
+// {
+// }
+
+#endif

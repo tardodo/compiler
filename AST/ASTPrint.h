@@ -1,3 +1,5 @@
+#ifndef ASTPRINT_H
+#define ASTPRINT_H
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
@@ -8,15 +10,19 @@ private:
     /* data */
 public:
     ASTExpression* expression;
-    ASTPrint(ASTExpression* expr);
-    ~ASTPrint();
+    ASTPrint(ASTExpression* expr){
+        expression = expr;
+    }
+    ~ASTPrint(){};
 };
 
-ASTPrint::ASTPrint(ASTExpression* expr)
-{
-    expression = expr;
-}
+// ASTPrint::ASTPrint(ASTExpression* expr)
+// {
+//     expression = expr;
+// }
 
-ASTPrint::~ASTPrint()
-{
-}
+// ASTPrint::~ASTPrint()
+// {
+// }
+
+#endif

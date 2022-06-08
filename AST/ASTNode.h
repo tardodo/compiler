@@ -6,16 +6,16 @@ class ASTNode{
 
 public:
 
-    ASTNode();
-    ~ASTNode();
+    ASTNode(){};
+    ~ASTNode(){};
 };
 
-ASTNode::ASTNode()
-{
-}
+// ASTNode::ASTNode()
+// {
+// }
 
-ASTNode::~ASTNode()
-{
-}
+// ASTNode::~ASTNode()
+// {
+// }
 
 #endif

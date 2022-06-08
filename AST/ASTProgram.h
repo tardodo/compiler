@@ -10,16 +10,18 @@ private:
     std::vector<ASTNode*> childNodes;
     
 public:
-    ASTProgram(std::vector<ASTNode*> statements);
-    ~ASTProgram();
+    ASTProgram(std::vector<ASTNode*> statements){
+        childNodes = statements;
+    }
+    ~ASTProgram(){};
 };
 
-ASTProgram::ASTProgram(std::vector<ASTNode*> statements){
-    childNodes = statements;
-}
+// ASTProgram::ASTProgram(std::vector<ASTNode*> statements){
+//     childNodes = statements;
+// }
 
-ASTProgram::~ASTProgram()
-{
-}
+// ASTProgram::~ASTProgram()
+// {
+// }
 
 #endif  

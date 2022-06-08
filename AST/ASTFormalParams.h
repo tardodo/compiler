@@ -1,3 +1,5 @@
+#ifndef ASTFORMALPARAMS_H
+#define ASTFORMALPARAMS_H
 
 #include "ASTFormalParam.h"
 #include <vector>
@@ -9,15 +11,19 @@ private:
 public:
     std::vector<ASTFormalParam*> params;
 
-    ASTFormalParams(std::vector<ASTFormalParam*> paramList);
+    ASTFormalParams(std::vector<ASTFormalParam*> paramList){
+        params = paramList;
+    }
     ~ASTFormalParams();
 };
 
-ASTFormalParams::ASTFormalParams(std::vector<ASTFormalParam*> paramList)
-{
-    params = paramList;
-}
+// ASTFormalParams::ASTFormalParams(std::vector<ASTFormalParam*> paramList)
+// {
+//     params = paramList;
+// }
 
-ASTFormalParams::~ASTFormalParams()
-{
-}
+// ASTFormalParams::~ASTFormalParams()
+// {
+// }
+
+#endif

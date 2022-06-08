@@ -2,7 +2,26 @@
 #define PARSER_H
 
 #include "lexer.h"
-
+#include "AST/ASTNode.h"
+#include "AST/ASTExpression.h"
+#include "AST/ASTActualParams.h"
+#include "AST/ASTAssign.h"
+#include "AST/ASTBinOp.h"
+#include "AST/ASTBlock.h"
+#include "AST/ASTFormalParam.h"
+#include "AST/ASTFormalParams.h"
+#include "AST/ASTForStmt.h"
+#include "AST/ASTFuncCall.h"
+#include "AST/ASTFuncDecl.h"
+#include "AST/ASTIdentifier.h"
+#include "AST/ASTIfStmt.h"
+#include "AST/ASTLiteral.h"
+#include "AST/ASTPrint.h"
+#include "AST/ASTProgram.h"
+#include "AST/ASTReturn.h"
+#include "AST/ASTVarDecl.h"
+#include "AST/ASTWhile.h"
+#include "AST/ASTUnary.h"
 
 class Parser
 {
@@ -18,45 +37,45 @@ public:
 
     Token getNextToken();
 
-    bool Fail(std::string error);
+    ASTNode* Fail(std::string error);
 
-    bool program();
+    ASTProgram* program();
 
-    bool statement();
+    ASTNode* statement();
 
-    bool variableDecl();
-    bool assignment();
-    bool printStatement();
-    bool ifStatement();
-    bool forStatement();
-    bool whileStatement();
-    bool returnStatement();
-    bool functionDecl();
-    bool block();
+    ASTVarDecl* variableDecl();
+    ASTAssign* assignment();
+    ASTPrint* printStatement();
+    ASTIfStmt* ifStatement();
+    ASTForStmt* forStatement();
+    ASTWhile* whileStatement();
+    ASTReturn* returnStatement();
+    ASTFuncDecl* functionDecl();
+    ASTBlock* block();
 
     // bool identifier();
-    bool formalParams();
+    ASTFormalParams* formalParams();
     bool type();
     
-    bool formalParam();
+    ASTFormalParam* formalParam();
 
-    bool expression();
+    ASTExpression* expression();
 
-    bool simpleExpr();
+    ASTExpression* simpleExpr();
     // bool relationalOp();
     
-    bool term();
+    ASTExpression* term();
     // bool additiveOp();
 
-    bool factor();
+    ASTExpression* factor();
     // bool multiplicativeOp();
 
-    bool literal();
-    bool functionCall();
-    bool subExpression();
-    bool unary();
+    ASTLiteral* literal();
+    ASTFuncCall* functionCall();
+    ASTExpression* subExpression();
+    ASTUnary* unary();
 
-    bool actualParams();
+    ASTActualParams* actualParams();
 
     // bool booleanLiteral();
     // bool integerLiteral();

@@ -1,3 +1,5 @@
+#ifndef ASTWHILE_H
+#define ASTWHILE_H
 
 #include "ASTNode.h"
 #include "ASTBlock.h"
@@ -11,16 +13,21 @@ public:
     ASTExpression* expression;
     ASTBlock* block;
 
-    ASTWhile(ASTExpression* expr, ASTBlock* bl);
-    ~ASTWhile();
+    ASTWhile(ASTExpression* expr, ASTBlock* bl){
+        expression = expr;
+        block = bl;
+    }
+    ~ASTWhile(){};
 };
 
-ASTWhile::ASTWhile(ASTExpression* expr, ASTBlock* bl)
-{
-    expression = expr;
-    block = bl;
-}
+// ASTWhile::ASTWhile(ASTExpression* expr, ASTBlock* bl)
+// {
+//     expression = expr;
+//     block = bl;
+// }
 
-ASTWhile::~ASTWhile()
-{
-}
+// ASTWhile::~ASTWhile()
+// {
+// }
+
+#endif

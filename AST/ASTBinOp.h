@@ -1,3 +1,6 @@
+#ifndef ASTBINOP_H
+#define ASTBINOP_H
+
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
@@ -13,17 +16,23 @@ public:
     ASTExpression* leftChild;
     ASTExpression* rightChild;
 
-    ASTBinOp(ASTExpression* left, std::string oper, ASTExpression* right);
-    ~ASTBinOp();
-};
-
-ASTBinOp::ASTBinOp(ASTExpression* left, std::string oper, ASTExpression* right)
-{
-    leftChild = left;
+    ASTBinOp(ASTExpression* left, std::string oper, ASTExpression* right){
+        leftChild = left;
     op = oper;
     rightChild = right;
-}
+    }
+    ~ASTBinOp(){};
+};
 
-ASTBinOp::~ASTBinOp()
-{
-}
+// ASTBinOp::ASTBinOp(ASTExpression* left, std::string oper, ASTExpression* right)
+// {
+//     leftChild = left;
+//     op = oper;
+//     rightChild = right;
+// }
+
+// ASTBinOp::~ASTBinOp()
+// {
+// }
+
+#endif  

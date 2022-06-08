@@ -1,3 +1,6 @@
+#ifndef ASTACTUALPARAMS_H
+#define ASTACTUALPARAMS_H
+
 
 #include "ASTExpression.h"
 #include <vector>
@@ -9,15 +12,19 @@ private:
 public:
     std::vector<ASTExpression*> params;
 
-    ASTActualParams(std::vector<ASTExpression*> paramList);
+    ASTActualParams(std::vector<ASTExpression*> paramList){
+        params = paramList;
+    }
     ~ASTActualParams();
 };
 
-ASTActualParams::ASTActualParams(std::vector<ASTExpression*> paramList)
-{
-    params = paramList;
-}
+// ASTActualParams::ASTActualParams(std::vector<ASTExpression*> paramList)
+// {
+//     params = paramList;
+// }
 
-ASTActualParams::~ASTActualParams()
-{
-}
+// ASTActualParams::~ASTActualParams()
+// {
+// }
+
+#endif

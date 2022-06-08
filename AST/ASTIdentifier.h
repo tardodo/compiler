@@ -11,17 +11,19 @@ private:
     /* data */
 public:
     std::string name;
-    ASTIdentifier(std::string name);
-    ~ASTIdentifier();
+    ASTIdentifier(std::string name){
+        this->name = name;
+    }
+    ~ASTIdentifier(){};
 };
 
-ASTIdentifier::ASTIdentifier(std::string name)
-{
-    this->name = name;
-}
+// ASTIdentifier::ASTIdentifier(std::string name)
+// {
+//     this->name = name;
+// }
 
-ASTIdentifier::~ASTIdentifier()
-{
-}
+// ASTIdentifier::~ASTIdentifier()
+// {
+// }
 
 #endif  

@@ -1,3 +1,5 @@
+#ifndef ASTFUNCCALL_H
+#define ASTFUNCCALL_H
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
@@ -11,16 +13,21 @@ private:
 public:
     ASTIdentifier* identifier;
     ASTActualParams* params;
-    ASTFuncCall(ASTIdentifier* id,ASTActualParams* paramList);
-    ~ASTFuncCall();
+    ASTFuncCall(ASTIdentifier* id,ASTActualParams* paramList){
+        identifier = id;
+    params = paramList;
+    }
+    ~ASTFuncCall(){};
 };
 
-ASTFuncCall::ASTFuncCall(ASTIdentifier* id,ASTActualParams* paramList)
-{
-    identifier = id;
-    params = paramList;
-}
+// ASTFuncCall::ASTFuncCall(ASTIdentifier* id,ASTActualParams* paramList)
+// {
+//     identifier = id;
+//     params = paramList;
+// }
 
-ASTFuncCall::~ASTFuncCall()
-{
-}
+// ASTFuncCall::~ASTFuncCall()
+// {
+// }
+
+#endif

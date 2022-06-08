@@ -1,3 +1,5 @@
+#ifndef ASTIFSTMT_H
+#define ASTIFSTMT_H
 
 #include "ASTNode.h"
 #include "ASTBlock.h"
@@ -12,17 +14,23 @@ public:
     ASTBlock* trueBlock;
     ASTBlock* falseBlock;
 
-    ASTIfStmt(ASTExpression* cond, ASTBlock* t, ASTBlock* f);
-    ~ASTIfStmt();
-};
-
-ASTIfStmt::ASTIfStmt(ASTExpression* cond, ASTBlock* t, ASTBlock* f)
-{
-    condition = cond;
+    ASTIfStmt(ASTExpression* cond, ASTBlock* t, ASTBlock* f){
+        condition = cond;
     trueBlock = t;
     falseBlock = f;
-}
+    }
+    ~ASTIfStmt(){};
+};
 
-ASTIfStmt::~ASTIfStmt()
-{
-}
+// ASTIfStmt::ASTIfStmt(ASTExpression* cond, ASTBlock* t, ASTBlock* f)
+// {
+//     condition = cond;
+//     trueBlock = t;
+//     falseBlock = f;
+// }
+
+// ASTIfStmt::~ASTIfStmt()
+// {
+// }
+
+#endif

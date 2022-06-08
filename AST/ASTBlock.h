@@ -1,3 +1,5 @@
+#ifndef ASTBLOCK_H
+#define ASTBLOCK_H
 
 #include "ASTNode.h"
 #include <vector>
@@ -9,15 +11,19 @@ private:
 public:
     std::vector<ASTNode*> childNodes;
 
-    ASTBlock(std::vector<ASTNode*> statements);
-    ~ASTBlock();
+    ASTBlock(std::vector<ASTNode*> statements){
+        childNodes = statements;
+    }
+    ~ASTBlock(){};
 };
 
-ASTBlock::ASTBlock(std::vector<ASTNode*> statements)
-{
-    childNodes = statements;
-}
+// ASTBlock::ASTBlock(std::vector<ASTNode*> statements)
+// {
+//     childNodes = statements;
+// }
 
-ASTBlock::~ASTBlock()
-{
-}
+// ASTBlock::~ASTBlock()
+// {
+// }
+
+#endif

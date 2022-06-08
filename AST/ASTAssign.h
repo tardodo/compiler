@@ -1,3 +1,5 @@
+#ifndef ASTASSIGN_H
+#define ASTASSIGN_H
 
 #include "ASTNode.h"
 #include "ASTExpression.h"
@@ -12,16 +14,21 @@ public:
     ASTIdentifier* identifier;
     ASTExpression* expression;
 
-    ASTAssign(ASTIdentifier* id, ASTExpression* expr);
+    ASTAssign(ASTIdentifier* id, ASTExpression* expr){
+        identifier = id;
+        expression = expr;  
+    }
     ~ASTAssign();
 };
 
-ASTAssign::ASTAssign(ASTIdentifier* id, ASTExpression* expr)
-{
-    identifier = id;
-    expression = expr;
-}
+// ASTAssign::ASTAssign(ASTIdentifier* id, ASTExpression* expr)
+// {
+//     identifier = id;
+//     expression = expr;
+// }
 
-ASTAssign::~ASTAssign()
-{
-}
+// ASTAssign::~ASTAssign()
+// {
+// }
+
+#endif

@@ -1,3 +1,5 @@
+#ifndef ASTFORSTMT_H
+#define ASTFORSTMT_H
 
 #include "ASTNode.h"
 #include "ASTVarDecl.h"
@@ -14,18 +16,25 @@ public:
     ASTAssign* assignment;
     ASTBlock* block;
 
-    ASTForStmt(ASTVarDecl* decl, ASTExpression* expr, ASTAssign* assign, ASTBlock* bl);
-    ~ASTForStmt();
-};
-
-ASTForStmt::ASTForStmt(ASTVarDecl* decl, ASTExpression* expr, ASTAssign* assign, ASTBlock* bl)
-{
-    varDecl = decl;
+    ASTForStmt(ASTVarDecl* decl, ASTExpression* expr, ASTAssign* assign, ASTBlock* bl){
+        varDecl = decl;
     expression = expr;
     assignment = assign;
     block = bl;
-}
+    }
+    ~ASTForStmt(){};
+};
 
-ASTForStmt::~ASTForStmt()
-{
-}
+// ASTForStmt::ASTForStmt(ASTVarDecl* decl, ASTExpression* expr, ASTAssign* assign, ASTBlock* bl)
+// {
+//     varDecl = decl;
+//     expression = expr;
+//     assignment = assign;
+//     block = bl;
+// }
+
+// ASTForStmt::~ASTForStmt()
+// {
+// }
+
+#endif

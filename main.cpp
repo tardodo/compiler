@@ -3,6 +3,7 @@
 #include <vector>
 // #include "lexer.h"
 #include "Parser.h"
+// #include "AST/ASTNode.h"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ int main() {
     
     Parser parse;
 
-    bool result = parse.program();
+    ASTNode* result = parse.program();
 
     cout << result << endl;
 
