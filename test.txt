@@ -13,8 +13,21 @@ fn XGreaterY(x:float, y:float) -> bool {
 let x:float = 2.4;
 print x; 
 let c:char =          'h'          ; 
+let b:bool = false;
 
+b = XGreaterY(Sq(x), 5.1);
 
+for(let i:int = 0; i < 5; i = i + 1){
+    print i;
+}
+
+while(x > 5.0){
+    if(true){
+        x = x + 1.0;
+    }else{
+        x = x - 1.0;
+    }
+}
 
 // this aisfu afhu agjbi kbjh SGD31895097185y   9084ry 787392646$%@$&(^%))_*%$@~.,/\';[] //////////
 
@@ -32,5 +45,41 @@ let x:float = 2.4;
 print x; 
 char c =          'h'          ; 
 */
-
+/*
 let x:float = 10.1 + func(10, 50, 20) >= y*chong;
+
+fn Sq(x: float) -> float {
+    let g:float = 4.5;
+    if(g>x){
+        return g;
+    }else{
+        return x;
+    }
+}
+*/
+
+//let x:float = 5.1;
+let y:float = x + 10.1;
+
+fn Sq_1(x: float) -> float {
+    let g:float = 4.5;
+    if(g>x){
+        return g;
+    }else{
+        if(5.1 > g){
+            return x;
+        }
+    }
+
+    {
+        return 5.1;
+    }
+
+}
+
+let g:float = x*y;
+{
+    y = x + Sq(g);
+}
+
+

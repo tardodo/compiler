@@ -4,6 +4,7 @@
 // #include "lexer.h"
 #include "Parser.h"
 #include "Visitors/XMLVisitor.h"
+#include "Visitors/SemanticVisitor.h"
 // #include "AST/ASTNode.h"
 
 using namespace std;
@@ -35,9 +36,11 @@ int main() {
     
     Parser parse;
     XMLVisitor* v = new XMLVisitor();
+    SemanticVisitor* sv = new SemanticVisitor();
 
     ASTNode* result = parse.program();
     result->accept(v);
+    result->accept(sv);
 
     cout << result << endl;
 

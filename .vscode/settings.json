@@ -33,6 +33,7 @@
         "sstream": "cpp",
         "string": "cpp",
         "system_error": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "map": "cpp"
     }
 }

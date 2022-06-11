@@ -58,24 +58,145 @@
 		<Id>c</Id>
 		<Literal Type="char">'h'</Literal>
 	</VarDecl>
-	<VarDecl Type="float">
-		<Id>x</Id>
-		<BinaryOp Op=">=">
-			<BinaryOp Op="+">
-				<Literal Type="float">10.1</Literal>
+	<VarDecl Type="bool">
+		<Id>b</Id>
+		<Literal Type="bool">false</Literal>
+	</VarDecl>
+	<Assign>
+		<Id>b</Id>
+		<FuncCall>
+			<Id>XGreaterY</Id>
+			<ActualParams>
 				<FuncCall>
-					<Id>func</Id>
+					<Id>Sq</Id>
 					<ActualParams>
-						<Literal Type="int">10</Literal>
-						<Literal Type="int">50</Literal>
-						<Literal Type="int">20</Literal>
+						<Id>x</Id>
+					</ActualParams>
+				</FuncCall>
+				<Literal Type="float">5.1</Literal>
+			</ActualParams>
+		</FuncCall>
+	</Assign>
+	<For>
+		<VarDecl Type="int">
+			<Id>i</Id>
+			<Literal Type="int">0</Literal>
+		</VarDecl>
+		<BinaryOp Op="<">
+			<Id>i</Id>
+			<Literal Type="int">5</Literal>
+		</BinaryOp>
+		<Assign>
+			<Id>i</Id>
+			<BinaryOp Op="+">
+				<Id>i</Id>
+				<Literal Type="int">1</Literal>
+			</BinaryOp>
+		</Assign>
+		<Block>
+			<Print>
+				<Id>i</Id>
+			</Print>
+		</Block>
+	</For>
+	<While>
+		<BinaryOp Op=">">
+			<Id>x</Id>
+			<Literal Type="float">5.0</Literal>
+		</BinaryOp>
+		<Block>
+			<If>
+				<Literal Type="bool">true</Literal>
+				<Block>
+					<Assign>
+						<Id>x</Id>
+						<BinaryOp Op="+">
+							<Id>x</Id>
+							<Literal Type="float">1.0</Literal>
+						</BinaryOp>
+					</Assign>
+				</Block>
+				<Block>
+					<Assign>
+						<Id>x</Id>
+						<BinaryOp Op="-">
+							<Id>x</Id>
+							<Literal Type="float">1.0</Literal>
+						</BinaryOp>
+					</Assign>
+				</Block>
+			</If>
+		</Block>
+	</While>
+	<VarDecl Type="float">
+		<Id>y</Id>
+		<BinaryOp Op="+">
+			<Id>x</Id>
+			<Literal Type="float">10.1</Literal>
+		</BinaryOp>
+	</VarDecl>
+	<FuncDecl ReturnType="float">
+		<Id>Sq_1</Id>
+		<FormalParams>
+			<FormalParam Type="float">
+				<Id>x</Id>
+			</FormalParam>
+		</FormalParams>
+		<Block>
+			<VarDecl Type="float">
+				<Id>g</Id>
+				<Literal Type="float">4.5</Literal>
+			</VarDecl>
+			<If>
+				<BinaryOp Op=">">
+					<Id>g</Id>
+					<Id>x</Id>
+				</BinaryOp>
+				<Block>
+					<Return>
+						<Id>g</Id>
+					</Return>
+				</Block>
+				<Block>
+					<If>
+						<BinaryOp Op=">">
+							<Literal Type="float">5.1</Literal>
+							<Id>g</Id>
+						</BinaryOp>
+						<Block>
+							<Return>
+								<Id>x</Id>
+							</Return>
+						</Block>
+					</If>
+				</Block>
+			</If>
+			<Block>
+				<Return>
+					<Literal Type="float">5.1</Literal>
+				</Return>
+			</Block>
+		</Block>
+	</FuncDecl>
+	<VarDecl Type="float">
+		<Id>g</Id>
+		<BinaryOp Op="*">
+			<Id>x</Id>
+			<Id>y</Id>
+		</BinaryOp>
+	</VarDecl>
+	<Block>
+		<Assign>
+			<Id>y</Id>
+			<BinaryOp Op="+">
+				<Id>x</Id>
+				<FuncCall>
+					<Id>Sq</Id>
+					<ActualParams>
+						<Id>g</Id>
 					</ActualParams>
 				</FuncCall>
 			</BinaryOp>
-			<BinaryOp Op="*">
-				<Id>y</Id>
-				<Id>chong</Id>
-			</BinaryOp>
-		</BinaryOp>
-	</VarDecl>
+		</Assign>
+	</Block>
 </Prog>
