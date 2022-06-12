@@ -208,7 +208,8 @@ void XMLVisitor::visit(ASTFuncCall* node){
 
     node->identifier->accept(this);
     indent();
-    node->params->accept(this);
+    if(node->params != nullptr)
+        node->params->accept(this);
 
     tagIndentation--;
     indent();
@@ -223,7 +224,9 @@ void XMLVisitor::visit(ASTFuncDecl* node){
 
     node->identifier->accept(this);
     indent();
-    node->params->accept(this);
+    if(node->params != nullptr)
+        node->params->accept(this);
+        
     indent();
     node->block->accept(this);
 

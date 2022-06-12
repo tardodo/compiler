@@ -14,14 +14,25 @@ void SymbolTable::deleteScope(){
     sTable.pop();
 }
 
-void SymbolTable::insert(string name, string details){
+void SymbolTable::insert(string name, string details, int symbolType){
     map<string, Details> currentLevel = sTable.top();
 
-    Details dets = {details, {}};
+    Details dets = {details, {}, symbolType, ""};
 
     currentLevel.insert(pair<string, Details>(name, dets));
     sTable.pop();
     sTable.push(currentLevel);
+}
+
+void SymbolTable::insert(std::string name, Details details){
+    map<string, Details> currentLevel = sTable.top();
+
+    // Details dets = {details, {}, symbolType, ""};
+
+    currentLevel.insert(pair<string, Details>(name, details));
+    sTable.pop();
+    sTable.push(currentLevel);
+
 }
 
 Details SymbolTable::lookup(string name){

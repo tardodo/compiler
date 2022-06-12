@@ -47,156 +47,170 @@
 			</Return>
 		</Block>
 	</FuncDecl>
-	<VarDecl Type="float">
-		<Id>x</Id>
-		<Literal Type="float">2.4</Literal>
-	</VarDecl>
-	<Print>
-		<Id>x</Id>
-	</Print>
-	<VarDecl Type="char">
-		<Id>c</Id>
-		<Literal Type="char">'h'</Literal>
-	</VarDecl>
-	<VarDecl Type="bool">
-		<Id>b</Id>
-		<Literal Type="bool">false</Literal>
-	</VarDecl>
-	<Assign>
-		<Id>b</Id>
-		<FuncCall>
-			<Id>XGreaterY</Id>
-			<ActualParams>
-				<FuncCall>
-					<Id>Sq</Id>
-					<ActualParams>
-						<Id>x</Id>
-					</ActualParams>
-				</FuncCall>
-				<Literal Type="float">5.1</Literal>
-			</ActualParams>
-		</FuncCall>
-	</Assign>
-	<For>
-		<VarDecl Type="int">
-			<Id>i</Id>
-			<Literal Type="int">0</Literal>
-		</VarDecl>
-		<BinaryOp Op="<">
-			<Id>i</Id>
-			<Literal Type="int">5</Literal>
-		</BinaryOp>
-		<Assign>
-			<Id>i</Id>
-			<BinaryOp Op="+">
-				<Id>i</Id>
-				<Literal Type="int">1</Literal>
-			</BinaryOp>
-		</Assign>
-		<Block>
-			<Print>
-				<Id>i</Id>
-			</Print>
-		</Block>
-	</For>
-	<While>
-		<BinaryOp Op=">">
-			<Id>x</Id>
-			<Literal Type="float">5.0</Literal>
-		</BinaryOp>
-		<Block>
-			<If>
-				<Literal Type="bool">true</Literal>
-				<Block>
-					<Assign>
-						<Id>x</Id>
-						<BinaryOp Op="+">
-							<Id>x</Id>
-							<Literal Type="float">1.0</Literal>
-						</BinaryOp>
-					</Assign>
-				</Block>
-				<Block>
-					<Assign>
-						<Id>x</Id>
-						<BinaryOp Op="-">
-							<Id>x</Id>
-							<Literal Type="float">1.0</Literal>
-						</BinaryOp>
-					</Assign>
-				</Block>
-			</If>
-		</Block>
-	</While>
-	<VarDecl Type="float">
-		<Id>y</Id>
-		<BinaryOp Op="+">
-			<Id>x</Id>
-			<Literal Type="float">10.1</Literal>
-		</BinaryOp>
-	</VarDecl>
-	<FuncDecl ReturnType="float">
-		<Id>Sq_1</Id>
+	<FuncDecl ReturnType="bool">
+		<Id>XGreaterY_2</Id>
 		<FormalParams>
 			<FormalParam Type="float">
 				<Id>x</Id>
 			</FormalParam>
+			<FormalParam Type="float">
+				<Id>y</Id>
+			</FormalParam>
+		</FormalParams>
+		<Block>
+			<Return>
+				<BinaryOp Op=">">
+					<Id>x</Id>
+					<Id>y</Id>
+				</BinaryOp>
+			</Return>
+		</Block>
+	</FuncDecl>
+	<FuncDecl ReturnType="float">
+		<Id>AverageOfThree</Id>
+		<FormalParams>
+			<FormalParam Type="float">
+				<Id>x</Id>
+			</FormalParam>
+			<FormalParam Type="float">
+				<Id>y</Id>
+			</FormalParam>
+			<FormalParam Type="float">
+				<Id>z</Id>
+			</FormalParam>
 		</FormalParams>
 		<Block>
 			<VarDecl Type="float">
-				<Id>g</Id>
-				<Literal Type="float">4.5</Literal>
-			</VarDecl>
-			<If>
-				<BinaryOp Op=">">
-					<Id>g</Id>
-					<Id>x</Id>
+				<Id>total</Id>
+				<BinaryOp Op="+">
+					<BinaryOp Op="+">
+						<Id>x</Id>
+						<Id>y</Id>
+					</BinaryOp>
+					<Id>z</Id>
 				</BinaryOp>
-				<Block>
-					<Return>
-						<Id>g</Id>
-					</Return>
-				</Block>
-				<Block>
-					<If>
-						<BinaryOp Op=">">
-							<Literal Type="float">5.1</Literal>
-							<Id>g</Id>
+			</VarDecl>
+			<Return>
+				<BinaryOp Op="/">
+					<Id>total</Id>
+					<Literal Type="float">3.0</Literal>
+				</BinaryOp>
+			</Return>
+		</Block>
+	</FuncDecl>
+	<FuncDecl ReturnType="float">
+		<Id>AverageOfThree_2</Id>
+		<FormalParams>
+			<FormalParam Type="float">
+				<Id>x</Id>
+			</FormalParam>
+			<FormalParam Type="float">
+				<Id>y</Id>
+			</FormalParam>
+			<FormalParam Type="float">
+				<Id>z</Id>
+			</FormalParam>
+		</FormalParams>
+		<Block>
+			<Return>
+				<BinaryOp Op="/">
+					<BinaryOp Op="+">
+						<BinaryOp Op="+">
+							<Id>x</Id>
+							<Id>y</Id>
 						</BinaryOp>
-						<Block>
-							<Return>
-								<Id>x</Id>
-							</Return>
-						</Block>
-					</If>
-				</Block>
-			</If>
-			<Block>
-				<Return>
-					<Literal Type="float">5.1</Literal>
-				</Return>
-			</Block>
+						<Id>z</Id>
+					</BinaryOp>
+					<Literal Type="float">3.0</Literal>
+				</BinaryOp>
+			</Return>
+		</Block>
+	</FuncDecl>
+	<FuncDecl ReturnType="bool">
+		<Id>testF</Id>
+				<Block>
+			<Return>
+				<Literal Type="bool">false</Literal>
+			</Return>
 		</Block>
 	</FuncDecl>
 	<VarDecl Type="float">
-		<Id>g</Id>
+		<Id>x</Id>
+		<Literal Type="float">2.4</Literal>
+	</VarDecl>
+	<VarDecl Type="float">
+		<Id>y</Id>
+		<FuncCall>
+			<Id>Sq</Id>
+			<ActualParams>
+				<Literal Type="float">2.5</Literal>
+			</ActualParams>
+		</FuncCall>
+	</VarDecl>
+	<VarDecl Type="float">
+		<Id>z</Id>
+		<FuncCall>
+			<Id>Sq</Id>
+			<ActualParams>
+				<Id>x</Id>
+			</ActualParams>
+		</FuncCall>
+	</VarDecl>
+	<Print>
+		<Id>y</Id>
+	</Print>
+	<Print>
 		<BinaryOp Op="*">
 			<Id>x</Id>
-			<Id>y</Id>
+			<Id>z</Id>
 		</BinaryOp>
-	</VarDecl>
-	<Block>
-		<Assign>
-			<Id>y</Id>
-			<BinaryOp Op="+">
+	</Print>
+	<Print>
+		<FuncCall>
+			<Id>XGreaterY</Id>
+			<ActualParams>
 				<Id>x</Id>
+				<Literal Type="float">2.3</Literal>
+			</ActualParams>
+		</FuncCall>
+	</Print>
+	<Print>
+		<FuncCall>
+			<Id>XGreaterY_2</Id>
+			<ActualParams>
 				<FuncCall>
 					<Id>Sq</Id>
 					<ActualParams>
-						<Id>g</Id>
+						<Literal Type="float">1.5</Literal>
 					</ActualParams>
 				</FuncCall>
-			</BinaryOp>
-		</Assign>
-	</Block>
+				<Id>y</Id>
+			</ActualParams>
+		</FuncCall>
+	</Print>
+	<Print>
+		<FuncCall>
+			<Id>AverageOfThree</Id>
+			<ActualParams>
+				<Id>x</Id>
+				<Id>y</Id>
+				<Literal Type="float">1.2</Literal>
+			</ActualParams>
+		</FuncCall>
+	</Print>
+	<Print>
+		<FuncCall>
+			<Id>AverageOfThree_2</Id>
+			<ActualParams>
+				<Id>x</Id>
+				<Id>y</Id>
+				<Literal Type="float">1.2</Literal>
+			</ActualParams>
+		</FuncCall>
+	</Print>
+	<Print>
+		<FuncCall>
+			<Id>testF</Id>
+					</FuncCall>
+	</Print>
 </Prog>

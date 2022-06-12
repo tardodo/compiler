@@ -52,7 +52,7 @@ void SemanticVisitor::visit(ASTVarDecl* node){
         throw runtime_error("Variable with identifier " + node->identifier->name + " already exists in scope.");
     }
 
-    st.insert(node->identifier->name, node->type);
+    st.insert(node->identifier->name, node->type, Variable);
 
     node->identifier->accept(this);
     
@@ -162,7 +162,7 @@ void SemanticVisitor::visit(ASTFormalParam* node){
         throw runtime_error("Variable with identifier " + node->identifier->name + " already exists in scope.");
     }
 
-    st.insert(node->identifier->name, node->type);
+    st.insert(node->identifier->name, node->type, Variable);
     // node->type;
     paramTypes.push_back(node->type);
 
@@ -207,8 +207,9 @@ void SemanticVisitor::visit(ASTFuncCall* node){
     node->identifier->accept(this);
 
     lastFuncName = node->identifier->name;
-  
-    node->params->accept(this);
+    
+    if(node->params != nullptr)
+        node->params->accept(this);
 
     Details dets = st.lookup(node->identifier->name);
     lastType = dets.type;
@@ -221,17 +222,18 @@ void SemanticVisitor::visit(ASTFuncDecl* node){
         throw runtime_error("Function with identifier " + node->identifier->name + " already exists in scope.");
     
     }
-    st.insert(node->identifier->name, node->type);
+    st.insert(node->identifier->name, node->type, Function);
 
     genNewScope = false;
     st.newScope();
 
     node->identifier->accept(this);
     
-    node->params->accept(this);
+    if(node->params != nullptr)
+        node->params->accept(this);
     
     if(!paramTypes.empty()){
-        Details withParams = {node->type, paramTypes};
+        Details withParams = {node->type, paramTypes, Function};
         st.modify(node->identifier->name, withParams);
     }
 
@@ -313,7 +315,7 @@ void SemanticVisitor::visit(ASTReturn* node){
 }
 
 void SemanticVisitor::visit(ASTUnary* node){
-  
+    
     node->expr->accept(this);
 
    
