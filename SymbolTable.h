@@ -8,6 +8,7 @@
 
 enum{Variable, Function};
 
+// Struct for attributes for identifier
 typedef struct{
     std::string type;
     std::vector<std::string> parameters;
@@ -18,10 +19,9 @@ typedef struct{
 
 class SymbolTable
 {
-private:
-    /* data */
 public:
 
+    // Symbol table structure
     std::stack<std::map<std::string, Details>> sTable;
 
     SymbolTable(){};
@@ -31,7 +31,6 @@ public:
     void deleteScope();
     void insert(std::string name, std::string type, int symbolType);
     void insert(std::string name, Details details);
-    void insert(std::string name, std::string type, std::vector<std::string> params);
     Details lookup(std::string name);
     bool existsCurrScope(std::string name);
     void modify(std::string name, Details details);

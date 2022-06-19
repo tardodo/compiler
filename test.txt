@@ -1,113 +1,3 @@
-/*
-fn Sq(x: float) -> float {
-    return x*x;
-}
-
-
-fn XGreaterY(x:float, y:float) -> bool {
-    let ans:bool = true;
-    if(y>x) { ans = false;}
-    return ans;
-}
-
-let x:float = 2.4;
-print x; 
-let c:char =          'h'          ; 
-let b:bool = false;
-
-b = XGreaterY(Sq(x), 5.1);
-
-for(let i:int = 0; i < 5; i = i + 1){
-    print i;
-}
-
-while(x > 5.0){
-    if(true){
-        x = x + 1.0;
-    }else{
-        x = x - 1.0;
-    }
-}
-*/
-// this aisfu afhu agjbi kbjh SGD31895097185y   9084ry 787392646$%@$&(^%))_*%$@~.,/\';[] //////////
-
-/* fn Sq(x: float) -> float {
-    return x*x;
-}
-
-fn XGreaterY(x:float, y:float) -> bool {
-    let ans:bool = true;
-    if(y>x) { ans = false;}
-    return ans;
-}
-
-let x:float = 2.4;
-print x; 
-char c =          'h'          ; 
-*/
-/*
-let x:float = 10.1 + func(10, 50, 20) >= y*chong;
-
-fn Sq(x: float) -> float {
-    let g:float = 4.5;
-    if(g>x){
-        return g;
-    }else{
-        return x;
-    }
-}
-*/
-
-//let x:float = 5.1;
-//let y:float = x + 10.1;
-
-/*
-fn Sq_1(x: float) -> float {
-    let g:float = 4.5;
-    if(g>x){
-        return g;
-    }else{
-        if(5.1 > g){
-            return x;
-        }
-    }
-
-    {
-        return 5.1;
-    }
-
-}
-
-let g:float = x*y;
-{
-    y = x + Sq(g);
-}
-
-*/
-
-/*
-fn MoreThan50(x: int) -> bool {
-    if( x <= 50) { return false;}
-    return true;
-}
-
-let x:int = 45;
-
-while ( x < 50) {
-    print MoreThan50(x); // f a ls e  x6 si n c e bool ope r a t o r is <
-    x = x + 1;
-}
-
-x = 45;
-
-while (MoreThan50(x)) {
-    print MoreThan50(x); //  f a ls e  x5 si n c e bool ope r a t o r is <=
-    x = x + 1;
-}
-
-*/
-
-
 fn Sq (x:float) -> float {
     return x*x ;
 }
@@ -118,7 +8,7 @@ fn XGreaterY(x:float, y:float) -> bool {
     return ans;
 }
 
-//Same f u n c ti o n a l it y as func ti on above but using l e ss code
+//Same functionality as function above but using less code.
 
 fn XGreaterY_2(x:float, y:float) -> bool {
     return x > y;
@@ -130,29 +20,24 @@ fn AverageOfThree(x:float, y:float, z: float) -> float {
 }
 
 /*
-* Same f u n c ti o n a l it y as func ti on above but using l e ss code .
-* Note the use o f the br a cke ts in the e x p r e ssi on f o l l o w i n g
-* the r e turn statement .
+* Same functionality as function above but using less code.
+* Note the use of the brackets in the expression following
+* the return statement.
 */
 
 fn AverageOfThree_2 (x:float, y:float, z:float) -> float {
     return (x + y + z)/3.0;
 }
 
-fn testF() -> bool {
-    return false;
-}
-
-//Execution ( program entry point ) st a rts at the f i r s t statement
-// that is not a func ti on d e c l a r a ti o n .
+//Execution ( program entry point ) starts at the first statement 
+// that is not a function declaration.
 
 let x:float = 2.4;
 let y:float = Sq(2.5);
 let z:float = Sq(x);
-print y; //6.25
+print -y; //6.25
 print x*z; //13.824
-print XGreaterY(x, 2.3); // true
-print XGreaterY_2(Sq(1.5), y); // f a ls e
+print not XGreaterY(x, 2.3); // false
+print XGreaterY_2(Sq(1.5), y); // false
 print AverageOfThree(x, y, 1.2); //3.28
-print AverageOfThree_2(x, y, 1.2);
-print testF();
+print -AverageOfThree_2(x, y, 1.2); //3.28

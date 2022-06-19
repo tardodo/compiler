@@ -11,9 +11,11 @@ class ASTUnary: public ASTExpression
 private:
     /* data */
 public:
+    std::string unaryOp;
     ASTExpression* expr;
-    ASTUnary(ASTExpression* expr){
+    ASTUnary(ASTExpression* expr, std::string op){
         this->expr = expr;
+        unaryOp = op;
     }
     ~ASTUnary(){};
 

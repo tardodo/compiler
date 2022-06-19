@@ -26,13 +26,13 @@
 class Parser
 {
 private:
-    bool usedNextNext;
+    bool usedNextNext; 
     Token nextToken;
     Token nextNextToken;
     bool reportedFail;
     bool checkedOptional;
 public:
-    Parser(/* args */);
+    Parser();
     ~Parser();
 
     Token getNextToken();
@@ -40,9 +40,7 @@ public:
     ASTNode* Fail(std::string error);
 
     ASTProgram* program();
-
     ASTNode* statement();
-
     ASTVarDecl* variableDecl();
     ASTAssign* assignment();
     ASTPrint* printStatement();
@@ -52,38 +50,17 @@ public:
     ASTReturn* returnStatement();
     ASTFuncDecl* functionDecl();
     ASTBlock* block();
-
-    // bool identifier();
     ASTFormalParams* formalParams();
-    bool type();
-    
     ASTFormalParam* formalParam();
-
     ASTExpression* expression();
-
     ASTExpression* simpleExpr();
-    // bool relationalOp();
-    
     ASTExpression* term();
-    // bool additiveOp();
-
     ASTExpression* factor();
-    // bool multiplicativeOp();
-
     ASTLiteral* literal();
     ASTFuncCall* functionCall();
     ASTExpression* subExpression();
     ASTUnary* unary();
-
     ASTActualParams* actualParams();
-
-    // bool booleanLiteral();
-    // bool integerLiteral();
-    // bool floatLiteral();
-    // bool charLiteral();
-
-    
-
 };
 
 #endif

@@ -25,12 +25,10 @@ class ASTWhile;
 class visitor
 {
   public:
-    // virtual void visit(ASTNode* node) = 0;
     virtual void visit(ASTActualParams* node) = 0;
     virtual void visit(ASTAssign* node) = 0;
     virtual void visit(ASTBinOp* node) = 0;
     virtual void visit(ASTBlock* node) = 0;
-    // virtual void visit(ASTExpression* node) = 0;
     virtual void visit(ASTFormalParam* node) = 0;
     virtual void visit(ASTFormalParams* node) = 0;
     virtual void visit(ASTForStmt* node) = 0;

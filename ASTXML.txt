@@ -126,14 +126,6 @@
 			</Return>
 		</Block>
 	</FuncDecl>
-	<FuncDecl ReturnType="bool">
-		<Id>testF</Id>
-				<Block>
-			<Return>
-				<Literal Type="bool">false</Literal>
-			</Return>
-		</Block>
-	</FuncDecl>
 	<VarDecl Type="float">
 		<Id>x</Id>
 		<Literal Type="float">2.4</Literal>
@@ -157,7 +149,9 @@
 		</FuncCall>
 	</VarDecl>
 	<Print>
-		<Id>y</Id>
+		<Unary>
+			<Id>y</Id>
+		</Unary>
 	</Print>
 	<Print>
 		<BinaryOp Op="*">
@@ -166,13 +160,15 @@
 		</BinaryOp>
 	</Print>
 	<Print>
-		<FuncCall>
-			<Id>XGreaterY</Id>
-			<ActualParams>
-				<Id>x</Id>
-				<Literal Type="float">2.3</Literal>
-			</ActualParams>
-		</FuncCall>
+		<Unary>
+			<FuncCall>
+				<Id>XGreaterY</Id>
+				<ActualParams>
+					<Id>x</Id>
+					<Literal Type="float">2.3</Literal>
+				</ActualParams>
+			</FuncCall>
+		</Unary>
 	</Print>
 	<Print>
 		<FuncCall>
@@ -199,18 +195,15 @@
 		</FuncCall>
 	</Print>
 	<Print>
-		<FuncCall>
-			<Id>AverageOfThree_2</Id>
-			<ActualParams>
-				<Id>x</Id>
-				<Id>y</Id>
-				<Literal Type="float">1.2</Literal>
-			</ActualParams>
-		</FuncCall>
-	</Print>
-	<Print>
-		<FuncCall>
-			<Id>testF</Id>
-					</FuncCall>
+		<Unary>
+			<FuncCall>
+				<Id>AverageOfThree_2</Id>
+				<ActualParams>
+					<Id>x</Id>
+					<Id>y</Id>
+					<Literal Type="float">1.2</Literal>
+				</ActualParams>
+			</FuncCall>
+		</Unary>
 	</Print>
 </Prog>

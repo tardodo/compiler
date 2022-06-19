@@ -1,30 +1,12 @@
 #include "Parser.h"
-// #include "AST/ASTNode.h"
-// #include "AST/ASTExpression.h"
-// #include "AST/ASTActualParams.h"
-// #include "AST/ASTAssign.h"
-// #include "AST/ASTBinOp.h"
-// #include "AST/ASTBlock.h"
-// #include "AST/ASTFormalParam.h"
-// #include "AST/ASTFormalParams.h"
-// #include "AST/ASTForStmt.h"
-// #include "AST/ASTFuncCall.h"
-// #include "AST/ASTFuncDecl.h"
-// #include "AST/ASTIdentifier.h"
-// #include "AST/ASTIfStmt.h"
-// #include "AST/ASTLiteral.h"
-// #include "AST/ASTPrint.h"
-// #include "AST/ASTProgram.h"
-// #include "AST/ASTReturn.h"
-// #include "AST/ASTVarDecl.h"
-// #include "AST/ASTWhile.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-Parser::Parser(/* args */)
+Parser::Parser()
 {
+    // Initialize vars
     usedNextNext = false;
     reportedFail = false;
     checkedOptional = false;
@@ -34,15 +16,25 @@ Parser::~Parser()
 {
 }
 
+// Method which interacts with Lexer
 Token Parser::getNextToken(){
     
     Token temp = {tokOther, "boo"};
 
+    // If k=2 lookahead isn't used, fetch next valid token
     if(!usedNextNext){
+        // Filter unnecessary tokens
         while(temp.tok == tokOther){
             temp = nextWord();
+
+            // report error
+            if(temp.tok == tokInvalid){
+                throw runtime_error("Unable to process string: " + temp.data);
+            }
         }
         return temp;
+
+    // Otherwise return the token previously fetched at k=2
     }else{
         usedNextNext = false;
         return nextNextToken;
@@ -52,31 +44,21 @@ Token Parser::getNextToken(){
     
 }
 
+// Root node
 ASTProgram* Parser::program(){
     nextToken = getNextToken();
-
-    // if(statement()){
-    //     if(nextToken.tok == tokEndOfFile)
-    //         return true;
-    //     else Fail();
-    // }else if(nextToken.tok == tokEndOfFile)
-    //     return true;
-    // else Fail();
-    ASTProgram* prog;
+    
     vector<ASTNode*> stmts;
     ASTNode* node;
 
     // Zero or more statements
     while((node = statement()) != nullptr){
-        // nextToken = getNextToken();
+        
+        // Collect statements
         stmts.push_back(node);
-        //node = statement();
-        // if(nextToken.tok == tokEndOfFile)
-        //     return true;
-        // cout << "outer loop" << endl;
-
     }
 
+    // If eof reached and no fails reported, return root node with statements
     if(nextToken.tok == tokEndOfFile && !reportedFail)
         return new ASTProgram(stmts);
     else return nullptr;
@@ -84,38 +66,36 @@ ASTProgram* Parser::program(){
 }
 
 ASTNode* Parser::Fail(string error){
-    cout << "Syntax Error at " << error << endl;
+    cout << "Syntax Error: " << error << endl;
     reportedFail = true;
     return nullptr;
 }
 
+// Parse statement
 ASTNode* Parser::statement(){
 
     ASTNode* node;
-    // node = variableDecl();
 
     if((node = variableDecl()) != nullptr){
-        // if(!checkedOptional) nextToken = getNextToken();
-        // else checkedOptional = false;
 
         if(nextToken.tok == tokSemicolon){
             nextToken = getNextToken();
             return node;
-        }else return Fail("variable declaration");
+        }else return Fail("Missing ';' at Variable Declaration");
     
     }else if((node = assignment()) != nullptr){
-        //nextToken = getNextToken();
+        
         if(nextToken.tok == tokSemicolon){
             nextToken = getNextToken();
             return node;
-        }else return Fail("assignment");
+        }else return Fail("Missing ';' at Assignment");
          
     }else if((node = printStatement()) != nullptr){
-        // nextToken = getNextToken();
+     
         if(nextToken.tok == tokSemicolon){
             nextToken = getNextToken();
             return node;
-        }else return Fail("print statement");
+        }else return Fail("Missing ';' at Print statement");
 
     }else if((node = ifStatement()) != nullptr){
         return node;
@@ -127,11 +107,11 @@ ASTNode* Parser::statement(){
         return node;
 
     }else if((node = returnStatement()) != nullptr){
-        // nextToken = getNextToken();
+       
         if(nextToken.tok == tokSemicolon){
             nextToken = getNextToken();
             return node;
-        }else return Fail("return");
+        }else return Fail("Missing ';' at Return statement");
 
     }else if((node = functionDecl()) != nullptr){
         return node;
@@ -143,25 +123,30 @@ ASTNode* Parser::statement(){
     return nullptr;
 }
 
+// Parse Variable Declaration
 ASTVarDecl* Parser::variableDecl(){
 
     if(nextToken.tok == tokLetReserve){
         nextToken = getNextToken();
+        string error = "Identifier";
 
         if(nextToken.tok == tokIdentifier){
             ASTIdentifier* id = new ASTIdentifier(nextToken.data);
             nextToken = getNextToken();
+            error = "':'";
 
             if(nextToken.tok == tokColon){
                 nextToken = getNextToken();
+                error = "Type";
 
                 if(nextToken.tok == tokFloatReserve || nextToken.tok == tokIntReserve || nextToken.tok == tokBoolReserve || nextToken.tok == tokCharReserve){
                     string type = nextToken.data;
                     nextToken = getNextToken();
+                    error = "'='";
 
                     if(nextToken.tok == tokEquals){
-                        // return expression();
                         nextToken = getNextToken();
+                        error = "Expression";
                         
                         ASTExpression* expr;
 
@@ -173,34 +158,36 @@ ASTVarDecl* Parser::variableDecl(){
             }
         }
 
-        Fail("inside variable declaration");
+        Fail("Missing " + error+ " at Variable declaration");
         return nullptr;
 
     }else return nullptr;
-
-    // return Fail();
 }
 
+// Parse Assignment
 ASTAssign* Parser::assignment(){
 
     if(nextToken.tok == tokIdentifier){
         ASTIdentifier* id = new ASTIdentifier(nextToken.data);
-        
+        string error = "'=''";
+
         nextToken = getNextToken();
         if(nextToken.tok == tokEquals){
             nextToken = getNextToken();
+            error = "Expression";
 
             ASTExpression* node;
             if((node = expression()) != nullptr)
                 return new ASTAssign(id, node);
         }
 
-        Fail("inside assignment");
+        Fail("Missing " + error+ " at Assignment");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse print
 ASTPrint* Parser::printStatement(){
     if(nextToken.tok == tokPrintReserve){
         nextToken = getNextToken();
@@ -209,37 +196,43 @@ ASTPrint* Parser::printStatement(){
         if((node = expression()) != nullptr)
             return new ASTPrint(node);
         else {
-            Fail("inside print");
+            Fail("Missing Expression at Print statement");
             return nullptr;
         }
 
     }else return nullptr;
 }
 
+// Parse If
 ASTIfStmt* Parser::ifStatement(){
 
     if(nextToken.tok == tokIfReserve){
         nextToken = getNextToken();
+        string error = "'('";
 
         if(nextToken.tok == tokBracketOpen){
             nextToken = getNextToken();
+            error = "Condition";
 
             ASTExpression* condition;
             if((condition = expression()) != nullptr){
+                error = "'('";
 
                 if(nextToken.tok == tokBracketClose){
                     nextToken = getNextToken();
+                    error = "Body";
 
                     ASTBlock* ifBlock;
                     if((ifBlock = block()) != nullptr){
                         
                         ASTBlock* elseBlock = nullptr;
 
+                        // Optional
                         if(nextToken.tok == tokElseReserve){
                             nextToken = getNextToken();
 
                             if((elseBlock = block()) == nullptr){
-                                Fail("else if statement");
+                                Fail("Missing Body at Else statement");
                                 return nullptr;                                
                             }
                         }
@@ -251,41 +244,44 @@ ASTIfStmt* Parser::ifStatement(){
             }
         }
 
-        Fail("inside if statement");
+        Fail("Missing " + error+ " at If statement");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse For
 ASTForStmt* Parser::forStatement(){
 
     if(nextToken.tok == tokForReserve){
         nextToken = getNextToken();
+        string error = "'('";
 
         if(nextToken.tok == tokBracketOpen){
             nextToken = getNextToken();
+            error = "';'";
 
+            // Optional
             ASTVarDecl* varDecl = variableDecl();
-            // if(variableDecl()){
-                
-            // }
 
             if(nextToken.tok == tokSemicolon){
                 nextToken = getNextToken();
+                error = "Expression";
 
                 ASTExpression* expr;
                 if((expr = expression()) != nullptr){
+                    error = "';'";
 
                     if(nextToken.tok == tokSemicolon){
                         nextToken = getNextToken();
+                        error = "')'";
 
+                        // Optional
                         ASTAssign* assign = assignment();
-                        // if(assignment()){
-
-                        // }
 
                         if(nextToken.tok == tokBracketClose){
                             nextToken = getNextToken();
+                            error = "Body";
 
                             ASTBlock* body;
                             if((body = block()) != nullptr)
@@ -296,25 +292,30 @@ ASTForStmt* Parser::forStatement(){
             }
         }
 
-        Fail("inside for");
+        Fail("Missing " + error + " at For statement");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse While
 ASTWhile* Parser::whileStatement(){
 
     if(nextToken.tok == tokWhileReserve){
         nextToken = getNextToken();
+        string error = "'('";
 
         if(nextToken.tok == tokBracketOpen){
             nextToken = getNextToken();
+            error = "Condition";
 
             ASTExpression* expr;
             if((expr = expression()) != nullptr){
+                error = "')'";
 
                 if(nextToken.tok == tokBracketClose){
                     nextToken = getNextToken();
+                    error = "Body";
 
                     ASTBlock* body;
                     if((body = block()) != nullptr){
@@ -324,12 +325,13 @@ ASTWhile* Parser::whileStatement(){
             }
         }
 
-        Fail("inside while");
+        Fail("Missing " + error + " at While statement");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse return 
 ASTReturn* Parser::returnStatement(){
 
     if(nextToken.tok == tokReturnReserve){
@@ -339,41 +341,46 @@ ASTReturn* Parser::returnStatement(){
         if((expr = expression()) != nullptr)
             return new ASTReturn(expr);
         else{
-            Fail("inside return");
+            Fail("Missing Expression at Return statement");
             return nullptr;
         }
 
     }else return nullptr;
 }
 
+// Parse Function Declaration
 ASTFuncDecl* Parser::functionDecl(){
 
     if(nextToken.tok == tokFnReserve){
         nextToken = getNextToken();
+        string error = "Identifier";
 
         if(nextToken.tok == tokIdentifier){
             ASTIdentifier* id = new ASTIdentifier(nextToken.data);
 
             nextToken = getNextToken();
+            error = "'('";
 
             if(nextToken.tok == tokBracketOpen){
                 nextToken = getNextToken();
+                error = "')'";
 
+                // Optional
                 ASTFormalParams* params = formalParams();
-                // if(formalParams()){
-
-                // }
 
                 if(nextToken.tok == tokBracketClose){
                     nextToken = getNextToken();
+                    error = "'->'";
 
                     if(nextToken.tok == tokArrow){
                         nextToken = getNextToken();
+                        error = "Type";
 
                         if(nextToken.tok == tokFloatReserve || nextToken.tok == tokIntReserve || nextToken.tok == tokBoolReserve || nextToken.tok == tokCharReserve){
                             string dataType = nextToken.data;
 
                             nextToken = getNextToken();
+                            error = "Body";
 
                             ASTBlock* body;
                             if((body = block()) != nullptr)
@@ -385,12 +392,13 @@ ASTFuncDecl* Parser::functionDecl(){
             }
         }
 
-        Fail("inside function decl");
+        Fail("Missing "+error+" at Function Declaration");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse Block
 ASTBlock* Parser::block(){
 
     if(nextToken.tok == tokCurlyOpen){
@@ -398,6 +406,8 @@ ASTBlock* Parser::block(){
 
         vector <ASTNode*> statementList;
         ASTNode* stmt;
+
+        // Zero or more
         while((stmt = statement()) != nullptr){
             statementList.push_back(stmt);
         }
@@ -408,16 +418,13 @@ ASTBlock* Parser::block(){
             return new ASTBlock(statementList);
         }
 
-        Fail("inside block");
+        Fail("Missing '}' at Code Body/Block");
         return nullptr;
 
     }else return nullptr;
 }
 
-// bool Parser::identifier(){
-
-// }
-
+// Parse FormalParams
 ASTFormalParams* Parser::formalParams(){
 
     vector<ASTFormalParam*> paramsList;
@@ -427,7 +434,6 @@ ASTFormalParams* Parser::formalParams(){
         paramsList.push_back(param);
 
         // Zero or more
-
         while(nextToken.tok == tokComma){
             nextToken = getNextToken();
 
@@ -435,7 +441,7 @@ ASTFormalParams* Parser::formalParams(){
                 paramsList.push_back(param);
 
             }else{
-                Fail("inside formal paramS");
+                Fail("Missing Parameter at Function Declaration");
                 return nullptr;
 
             } 
@@ -446,17 +452,19 @@ ASTFormalParams* Parser::formalParams(){
 
     }else return nullptr;
 }
-// bool type();
-    
+
+// Parse Formal Param   
 ASTFormalParam* Parser::formalParam(){
 
     if(nextToken.tok == tokIdentifier){
         ASTIdentifier* id = new ASTIdentifier(nextToken.data);
 
         nextToken = getNextToken();
+        string error = "':'";
 
         if(nextToken.tok == tokColon){
             nextToken = getNextToken();
+            error = "Type";
 
             if(nextToken.tok == tokFloatReserve || nextToken.tok == tokIntReserve || nextToken.tok == tokBoolReserve || nextToken.tok == tokCharReserve){
                 string dataType = nextToken.data;
@@ -466,133 +474,104 @@ ASTFormalParam* Parser::formalParam(){
             }
         }
 
-        Fail("inside formal param");
+        Fail("Missing " +error+ " in Parameter at Function Declaration");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse Expression
 ASTExpression* Parser::expression(){
 
     ASTExpression* expr;
     if((expr = simpleExpr()) != nullptr){
-        // nextToken = getNextToken();
-        // if(!checkedOptional) {
-        //     nextToken = getNextToken();
-        //     checkedOptional = true;
-        // }
-
-        // ASTBinOp* binOpNode = nullptr;
+      
         ASTExpression* leftExpr;
         ASTExpression* rightExpr;
         string relOp;
 
+        // Zero or more
         while(nextToken.tok == tokRelOp){
-            //if(nextToken.tok == tokRelOp){
             relOp = nextToken.data;
             leftExpr = expr;
 
             nextToken = getNextToken();
 
-            
-            // checkedOptional = false;
             if((rightExpr = simpleExpr()) != nullptr){
+                // Left associative
                 expr = new ASTBinOp(leftExpr, relOp, rightExpr);
-                // nextToken = getNextToken();
             }else{
-                Fail("inside expression");
+                Fail("Missing Expression in Relational Operation");
                 return nullptr;
             }
-
-            //}
         }
 
-        // Zero or more repetitions
         return expr;
 
     }else return nullptr;
 }
 
+// Parse Simple Expression
 ASTExpression* Parser::simpleExpr(){
 
     ASTExpression* expr;
     if((expr = term()) != nullptr){
-        // nextToken = getNextToken();
-        // if(!checkedOptional){
-        //     nextToken = getNextToken();
-        //     checkedOptional = true;
-        // }
-
+     
         ASTExpression* leftExpr;
         ASTExpression* rightExpr;
         string addOp;
 
+        // Zero or more
         while(nextToken.tok == tokAddOp){
-            //if(nextToken.tok == tokRelOp){
             addOp = nextToken.data;
             leftExpr = expr;
-
             nextToken = getNextToken();
-            // checkedOptional = false;
-            if((rightExpr = term()) != nullptr){
-                expr = new ASTBinOp(leftExpr, addOp, rightExpr);
 
-                // nextToken = getNextToken();
+            if((rightExpr = term()) != nullptr){
+                // Left associative
+                expr = new ASTBinOp(leftExpr, addOp, rightExpr);
             }else {
-                Fail("inside simple expr");
+                Fail("Missing Expression in Additive Operation");
                 return nullptr;
             }
-
-            //}
         }
 
-        // Zero or more repetitions
         return expr;
 
     }else return nullptr;
 }
-// bool relationalOp();
-    
+
+// Parse term    
 ASTExpression* Parser::term(){
 
     ASTExpression* expr;
     if((expr = factor()) != nullptr){
-        // if(!checkedOptional) {
-        //     nextToken = getNextToken();
-        //     checkedOptional = true;
-        // }
-        // nextToken = getNextToken();
 
         ASTExpression* leftExpr;
         ASTExpression* rightExpr;
         string multOp;
 
+        // Zero or more
         while(nextToken.tok == tokMultOp){
-            //if(nextToken.tok == tokRelOp){
             multOp = nextToken.data;
             leftExpr = expr;
-
             nextToken = getNextToken();
-            // checkedOptional = false;
+         
             if((rightExpr = factor()) != nullptr){
+                // Left associative
                 expr = new ASTBinOp(leftExpr, multOp, rightExpr);
-
-                // nextToken = getNextToken();
             }else {
-                Fail("inside term");
+                Fail("Missing Expression in Multiplicative Operation");
                 return nullptr;
             }
-
-            //}
         }
 
-        // Zero or more repetitions
         return expr;
 
     }else return nullptr;
 }
-// bool additiveOp();
 
+// Parse factor
 ASTExpression* Parser::factor(){
 
     // use LL(2) for deciding between identifier and function call as both have the same First() set
@@ -620,8 +599,8 @@ ASTExpression* Parser::factor(){
 
     }else return nullptr;
 }
-// bool multiplicativeOp();
 
+// Parse literal
 ASTLiteral* Parser::literal(){
 
     if(nextToken.tok == tokTrueReserve || nextToken.tok == tokFalseReserve || nextToken.tok == tokIntLit || nextToken.tok == tokFloatLit || nextToken.tok == tokCharLit){
@@ -629,45 +608,45 @@ ASTLiteral* Parser::literal(){
         nextToken = getNextToken();
         return lit;
     }else return nullptr;
-
 }
+
+// Parse Function Call
 ASTFuncCall* Parser::functionCall(){
 
     if(nextToken.tok == tokIdentifier){
         ASTIdentifier* id = new ASTIdentifier(nextToken.data);
 
         nextToken = getNextToken();
+        string error = "'('";
 
         if(nextToken.tok == tokBracketOpen){
             nextToken = getNextToken();
+            error = "')'";
 
+            // Optional
             ASTActualParams* params = actualParams();
-            // if(actualParams()){
-            //     // nextToken = getNextToken();
-
-            //     // if(nextToken.tok == tokBracketClose){
-            //     //     return true;
-            //     // }
-            // } 
             
             if(nextToken.tok == tokBracketClose){
                 nextToken = getNextToken();
                 return new ASTFuncCall(id, params);
             }
         }
-        Fail("inside function call");
+        Fail("Missing "+ error+" at Function Call");
         return nullptr;
 
     }else return nullptr;
 }
+
+// Parse SubExpression
 ASTExpression* Parser::subExpression(){
 
     if(nextToken.tok == tokBracketOpen){
         nextToken = getNextToken();
+        string error = "Expression";
 
         ASTExpression* expr;
         if((expr = expression()) != nullptr){
-            // nextToken = getNextToken();
+            error = "')'";
 
             if(nextToken.tok == tokBracketClose){
                 nextToken = getNextToken();
@@ -675,40 +654,39 @@ ASTExpression* Parser::subExpression(){
             }
         }
 
-        Fail("inside sub expression");
+        Fail("Missing " +error+" at Sub Expression");
         return nullptr;
 
     }else return nullptr;
 }
 
+// Parse Unary
 ASTUnary* Parser::unary(){
-    if((nextToken.tok == tokMultOp && nextToken.data == "-") || nextToken.tok == tokNotReserve){
+    if((nextToken.tok == tokAddOp && nextToken.data == "-") || nextToken.tok == tokNotReserve){
+        string unaryOp = nextToken.data;
         nextToken = getNextToken();
 
         ASTExpression* expr;
         if((expr = expression()) != nullptr)
-            return new ASTUnary(expr);
+            return new ASTUnary(expr, unaryOp);
         else{
-            Fail("inside unary");
+            Fail("Missing Expression at Unary Operation");
             return nullptr;
         }
     }else return nullptr;
     
 }
 
+// Parse Actual Params
 ASTActualParams* Parser::actualParams(){
 
     vector<ASTExpression*> params;
     ASTExpression* expr;
     if((expr = expression()) != nullptr){
-        //nextToken = getNextToken();
-        // if(!checkedOptional) {
-        //     nextToken = getNextToken();
-        //     checkedOptional = true;
-        // }
 
         params.push_back(expr);
 
+        // Zero or more
         while(nextToken.tok == tokComma){
             nextToken = getNextToken();
 
@@ -716,7 +694,7 @@ ASTActualParams* Parser::actualParams(){
                 params.push_back(expr);
                 // nextToken = getNextToken();
             }else{
-                Fail("inside actual params");
+                Fail("Missing Parameter at Function Call");
                 return nullptr;
             } 
         }
@@ -725,8 +703,3 @@ ASTActualParams* Parser::actualParams(){
 
     }else return nullptr;
 }
-
-// bool booleanLiteral();
-// bool integerLiteral();
-// bool floatLiteral();
-// bool charLiteral();

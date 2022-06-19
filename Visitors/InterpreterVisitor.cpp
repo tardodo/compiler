@@ -120,6 +120,33 @@ string InterpreterVisitor::computeBinOp(float lVal, float rVal, string operand){
     return to_string(tempRes);
 }
 
+// Compute relational operations for char
+string InterpreterVisitor::computeBinOp(char lVal, char rVal, string operand){
+
+    lastType = "bool";
+
+    if(operand == ">"){
+        if(lVal > rVal) return "true";
+        else return "false";
+    }else if(operand == ">="){
+        if(lVal >= rVal) return "true";
+        else return "false";
+    }else if(operand == "<"){
+        if(lVal < rVal) return "true";
+        else return "false";
+    }else if(operand == "<="){
+        if(lVal <= rVal) return "true";
+        else return "false";
+    }else if(operand == "=="){
+        if(lVal == rVal) return "true";
+        else return"false";
+    }else{
+        if(lVal != rVal) return "true";
+        else return "false";
+    }
+    
+}
+
 // Begin visiting nodes and create base program scope
 void InterpreterVisitor::visit(ASTProgram* node){
     
@@ -185,11 +212,25 @@ void InterpreterVisitor::visit(ASTBinOp* node){
         int lVal = stoi(leftValue);
         int rVal = stoi(lastValue);
         lastValue = computeBinOp(lVal, rVal, node->op);
-    }else{
+    }else if(leftType == "float"){
         float lVal = stof(leftValue);
         float rVal = stof(lastValue);
         lastValue = computeBinOp(lVal, rVal, node->op);
+    }else if(leftType == "char"){
+        char lVal = leftValue[1];
+        char rVal = lastValue[1];
+        lastValue = computeBinOp(lVal, rVal, node->op);
+    }else{
+        if(node->op == "=="){
+            if(leftValue == lastValue) lastValue = "true";
+            else lastValue = "false";
+        }else{
+            if(leftValue != lastValue) lastValue = "true";
+            else lastValue = "false";
+        }
+        lastType = "bool";
     }
+    
 }
 
 // Actual Parameters Node
@@ -255,12 +296,8 @@ void InterpreterVisitor::visit(ASTBlock* node){
 // Formal Parameter Node
 // Simply obtain the identifier names to be carried over. Type attribute will be set by the value itself in Actual Params
 void InterpreterVisitor::visit(ASTFormalParam* node){
-
-    // st.insert(node->identifier->name, node->type, Variable);
    
     paramNames.push_back(node->identifier->name);
-
-    // node->identifier->accept(this);
 
 }
 
@@ -268,13 +305,10 @@ void InterpreterVisitor::visit(ASTFormalParam* node){
 // Visit each formal param
 void InterpreterVisitor::visit(ASTFormalParams* node){
    
-
     for(ASTFormalParam* child: node->params){
       
         child->accept(this);
     }    
-
-
 }
 
 // For Statement Node
@@ -346,8 +380,6 @@ void InterpreterVisitor::visit(ASTFuncCall* node){
 // Insert function into ST
 // If has params, then modify entry in ST and insert them
 void InterpreterVisitor::visit(ASTFuncDecl* node){
-   
-    // st.insert(node->identifier->name, node->type, Function);
 
     //Insert function with block into ST
     Details funcDets = {node->type, {}, Function, "", node->block};
@@ -363,8 +395,6 @@ void InterpreterVisitor::visit(ASTFuncDecl* node){
     if(!paramNames.empty()){
         Details withParams = st.lookup(node->identifier->name);
         withParams.parameters = paramNames;
-        // Details withParams = {node->type, paramNames, Function};
-        // withParams.funcBody = node->block;
         st.modify(node->identifier->name, withParams);
     }
 
@@ -377,93 +407,72 @@ void InterpreterVisitor::visit(ASTIfStmt* node){
 
     node->condition->accept(this);
 
+    // If condition is true, go in first block, otherwise else block if any
     if(lastValue == "true"){
         node->trueBlock->accept(this);
+
     }else if(node->falseBlock != nullptr){
-       
         node->falseBlock->accept(this);
-
     }
-
-    // if(lastType != "bool"){
-    //     throw runtime_error("Condition of If statement does not resolve to a value of type bool");
-    // }
-    
-    
-
-    // Reset var in case if stmt has return
-    // hasReturned = false;
-
-    // if(node->falseBlock != nullptr){
-       
-    //     node->falseBlock->accept(this);
-
-    // }
-    // }else if(funcDeclName != ""){
-    //     if(st.existsCurrScope(funcDeclName)){
-
-    //     }
-    // }
-
-   
 }
 
+// Literal Node
 void InterpreterVisitor::visit(ASTLiteral* node){
-
+    // store type and value
     lastType = node->type;
     lastValue = node->value;
-    // node->value;
-
-    
 }
 
+// Print Node
 void InterpreterVisitor::visit(ASTPrint* node){
-   
-
+    // print value
     node->expression->accept(this);
     cout<< lastValue << endl;
-
-   
 }
 
+// Return Node
 void InterpreterVisitor::visit(ASTReturn* node){
-
-    // if(funcDeclName == "")
-    //     throw runtime_error("Return statement missing function");
     
+    // If the function has not returned, access statement
     if(!hasReturned){
         node->expression->accept(this);
 
-        // Details funcType = st.lookup(funcDeclName);
         returnValue = lastValue;
-
-        // if(funcType.type != lastType)
-        //     throw runtime_error("Return statement value type does not much function return type for Function: "+ funcDeclName);
 
         hasReturned = true;
     }
 }
 
+// Unary Node
 void InterpreterVisitor::visit(ASTUnary* node){
   
     node->expr->accept(this);
 
-   
+    // Compute unary operation
+    if(lastType == "int"){
+        int temp = stoi(lastValue);
+        temp = -temp;
+        lastValue = to_string(temp);
+    }else if(lastType == "float"){
+        float temp = stof(lastValue);
+        temp = -temp;
+        lastValue = to_string(temp);
+    }else{
+        if(lastValue == "true") lastValue = "false";
+        else lastValue = "true";
+    }
 }
 
+// While Node
 void InterpreterVisitor::visit(ASTWhile* node){
    
-
     node->expression->accept(this);
 
+    // While condition is true, keep looping
     while(lastValue == "true"){
         node->block->accept(this);
 
+        // re-evaluate
         node->expression->accept(this);
     }
-
-    // if(lastType != "bool"){
-    //     throw runtime_error("Condition of While statement does not resolve to a value of type bool");
-    // }
-   
 }

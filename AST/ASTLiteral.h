@@ -41,7 +41,8 @@ public:
             return "char";
             break;
         
-        default:
+        default: 
+            return "unknown";
             break;
         }
     }

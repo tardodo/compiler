@@ -11,8 +11,7 @@ public:
     std::string lastType;
     std::vector<std::string> paramTypes;
     std::string lastFuncName;
-    bool genNewScope = true;
-    bool ifFlag = false;
+    bool genNewScope = true; 
     std::string funcDeclName;
     bool hasReturn = false;
 
@@ -23,7 +22,6 @@ public:
     virtual void visit(ASTAssign* node) override;
     virtual void visit(ASTBinOp* node) override;
     virtual void visit(ASTBlock* node) override;
-    // virtual void visit(ASTExpression* node) override;
     virtual void visit(ASTFormalParam* node) override;
     virtual void visit(ASTFormalParams* node) override;
     virtual void visit(ASTForStmt* node) override;
@@ -39,13 +37,5 @@ public:
     virtual void visit(ASTVarDecl* node) override;
     virtual void visit(ASTWhile* node) override;
 };
-
-// SemanticVisitor::SemanticVisitor(/* args */)
-// {
-// }
-
-// SemanticVisitor::~SemanticVisitor()
-// {
-// }
 
 #endif

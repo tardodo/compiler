@@ -13,8 +13,6 @@ public:
     std::vector<std::string> paramNames;
     std::string lastFuncName;
     bool genNewScope = true;
-    bool ifFlag = false;
-    std::string funcDeclName;
     bool hasReturned = false;
     std::string returnValue;
 
@@ -24,11 +22,11 @@ public:
     bool isRelOp(std::string relOp);
     std::string computeBinOp(int lVal, int rVal, std::string operand);
     std::string computeBinOp(float lVal, float rVal, std::string operand);
+    std::string computeBinOp(char lVal, char rVal, std::string operand);
     virtual void visit(ASTActualParams* node) override;
     virtual void visit(ASTAssign* node) override;
     virtual void visit(ASTBinOp* node) override;
     virtual void visit(ASTBlock* node) override;
-    // virtual void visit(ASTExpression* node) override;
     virtual void visit(ASTFormalParam* node) override;
     virtual void visit(ASTFormalParams* node) override;
     virtual void visit(ASTForStmt* node) override;

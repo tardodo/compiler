@@ -25,11 +25,8 @@
 
 using namespace std;
 
-// void XMLVisitor::visit(ASTNode* node){
-
-// }
-
 XMLVisitor::XMLVisitor(){
+    // Open File
     openFile();
     tagIndentation = 0;
 }
@@ -42,16 +39,17 @@ void XMLVisitor::closeFile(){
     xmlFile.close();
 }
 
+// Indent
 void XMLVisitor::indent(){
     for(int i = 0; i < tagIndentation; i++){
         xmlFile << "\t";
     }
 }
 
+
 void XMLVisitor::visit(ASTProgram* node){
     xmlFile << "<Prog>" << endl;
     tagIndentation++;
-    // indent();
 
     for(ASTNode* child: node->childNodes){
         indent();
@@ -95,6 +93,7 @@ void XMLVisitor::visit(ASTBinOp* node){
     tagIndentation++;
     indent();
 
+    // Display left child first
     node->leftChild->accept(this);
     indent();
     node->rightChild->accept(this);
@@ -149,9 +148,6 @@ void XMLVisitor::visit(ASTBlock* node){
     xmlFile << "</Block>" << endl;
 }
 
-// void XMLVisitor::visit(ASTExpression* node){
-
-// }
 
 void XMLVisitor::visit(ASTFormalParam* node){
     xmlFile << "<FormalParam Type=\"" << node->type << "\">" << endl;
@@ -169,7 +165,6 @@ void XMLVisitor::visit(ASTFormalParam* node){
 void XMLVisitor::visit(ASTFormalParams* node){
     xmlFile << "<FormalParams>" << endl;
     tagIndentation++;
-    // indent();
 
     for(ASTFormalParam* child: node->params){
         indent();
@@ -187,12 +182,16 @@ void XMLVisitor::visit(ASTForStmt* node){
     tagIndentation++;
     indent();
 
-    node->varDecl->accept(this);
-    indent();
+    if(node->varDecl != nullptr){
+        node->varDecl->accept(this);
+        indent();
+    }
     node->expression->accept(this);
     indent();
-    node->assignment->accept(this);
-    indent();
+    if(node->assignment != nullptr){
+        node->assignment->accept(this);
+        indent();
+    }
     node->block->accept(this);
 
     tagIndentation--;
@@ -226,7 +225,7 @@ void XMLVisitor::visit(ASTFuncDecl* node){
     indent();
     if(node->params != nullptr)
         node->params->accept(this);
-        
+
     indent();
     node->block->accept(this);
 

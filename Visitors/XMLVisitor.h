@@ -16,12 +16,10 @@ public:
     void openFile();
     void closeFile();
     void indent();
-    // virtual void visit(ASTNode* node) override;
     virtual void visit(ASTActualParams* node) override;
     virtual void visit(ASTAssign* node) override;
     virtual void visit(ASTBinOp* node) override;
     virtual void visit(ASTBlock* node) override;
-    // virtual void visit(ASTExpression* node) override;
     virtual void visit(ASTFormalParam* node) override;
     virtual void visit(ASTFormalParams* node) override;
     virtual void visit(ASTForStmt* node) override;
